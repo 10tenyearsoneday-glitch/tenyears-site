@@ -247,3 +247,17 @@ body{
   border-top: 1px dashed #cfd8cf;
   margin: 28px 0;
 }
+.title-divider {
+  width: 120px;
+  height: 8px;
+  margin: 16px auto 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(160,180,160,.6),
+    rgba(160,180,160,.6) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  opacity: .6;
+  border-radius: 4px;
+}
