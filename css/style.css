@@ -243,3 +243,7 @@ body{
   letter-spacing: 0.04em;
   color: #6f7f73;
 }
+.divider {
+  border-top: 1px dashed #cfd8cf;
+  margin: 28px 0;
+}
