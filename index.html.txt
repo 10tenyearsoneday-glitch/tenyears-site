@@ -1,0 +1,2282 @@
+<!doctype html>
+<html lang="zh-TW" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>十年一日 TEN YEARS ONE DAY</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Noto Serif TC', serif;
+    }
+    
+    .main-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      background: linear-gradient(135deg, #F8F9F7 0%, #D4E7D1 50%, #B8C9A8 100%);
+    }
+    
+    .brand-title {
+      font-family: '標楷體', 'DFKai-SB', serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.2em;
+      color: #2D3C2D;
+      position: relative;
+      padding-bottom: 0.4rem;
+    }
+    
+    .brand-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 3px,
+        rgba(168,188,165,0.4) 3px,
+        rgba(168,188,165,0.4) 6px,
+        transparent 6px,
+        transparent 12px
+      );
+    }
+    
+    .brand-subtitle {
+      font-style: italic;
+      font-size: 0.85rem;
+      color: #6B7A66;
+      margin-top: 0.3rem;
+    }
+    
+    .nav-container {
+      display: flex;
+      gap: 0.7rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0.3rem 0;
+      scrollbar-width: thin;
+    }
+    
+    .nav-container::-webkit-scrollbar {
+      height: 4px;
+    }
+    
+    .nav-container::-webkit-scrollbar-thumb {
+      background: rgba(168,188,165,0.5);
+      border-radius: 2px;
+    }
+    
+    .nav-btn {
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.9);
+      border: 2px solid rgba(168,188,165,0.3);
+      border-radius: 20px;
+      color: #5A6855;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      border: none;
+    }
+    
+    .nav-btn:hover, .nav-btn.active {
+      background: #3D4A39;
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(168,188,165,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .icon-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(168,188,165,0.3);
+    }
+    
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid rgba(168,188,165,0.2);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(168,188,165,0.4);
+    }
+    
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    
+    .modal-overlay.show {
+      display: flex;
+    }
+    
+    .modal-box {
+      background: white;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 100%;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-height: 90%;
+      overflow-y: auto;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      background: white;
+      border-radius: 50%;
+      border: 2px solid rgba(168,188,165,0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #3D4A39;
+    }
+    
+    .close-btn:hover {
+      background: #DC2626;
+      color: white;
+      border-color: #DC2626;
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid rgba(168,188,165,0.3);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Noto Serif TC', serif;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: #8B9E88;
+    }
+    
+    .btn-primary {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, #8B9E88, #6B7A66);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #6B7A66, #5A6855);
+      transform: translateY(-2px);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(45,60,45,0.95);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      z-index: 2000;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+    
+    .page-section {
+      display: none;
+    }
+    
+    .page-section.active {
+      display: block;
+    }
+    
+    .admin-link {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: 40px;
+      height: 40px;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 500;
+    }
+    
+    .announcement-box {
+      background: rgba(255, 251, 230, 0.7);
+      border: 2px solid rgba(234, 179, 8, 0.4);
+      border-radius: 10px;
+      padding: 0.8rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.85rem;
+    }
+    
+    .subcategory-btn {
+      padding: 0.4rem 0.9rem;
+      background: rgba(255,255,255,0.8);
+      border: 2px solid rgba(168,188,165,0.4);
+      border-radius: 15px;
+      color: #5A6855;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    
+    .subcategory-btn:hover, .subcategory-btn.active {
+      background: #A8BCA5;
+      color: white;
+      border-color: #A8BCA5;
+    }
+    
+    .admin-fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(135deg, #8B9E88, #6B7A66);
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 500;
+      transition: all 0.3s;
+    }
+    
+    .admin-fab:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+    
+    .confirm-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1004;
+    }
+    
+    .confirm-overlay.show {
+      display: flex;
+    }
+    
+    .confirm-box {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div class="main-wrapper"><!-- Header -->
+   <header style="background: rgba(255,255,255,0.95); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid rgba(168,188,165,0.2);">
+    <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+     <div>
+      <h1 class="brand-title">十年一日</h1>
+      <p class="brand-subtitle">tenyears_oneday</p>
+     </div>
+     <div style="display: flex; gap: 0.6rem; align-items: center;"><button class="icon-btn" onclick="toggleSearch()" title="搜尋">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="#5A6855"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+       </svg></button> <a href="https://www.instagram.com/tenyears_oneday?igsh=MW9hcjBnaTdjNzc0MQ%3D%3D&amp;utm_source=qr" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Instagram">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="#5A6855"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+       </svg></a> <a href="https://line.me/R/ti/p/@396kwrga" target="_blank" rel="noopener noreferrer" class="icon-btn" title="LINE">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="#5A6855"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
+       </svg></a> <button class="icon-btn" onclick="openCart()" title="購物車">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="#5A6855"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+       </svg><span id="cartBadge" style="position: absolute; top: -5px; right: -5px; background: #DC2626; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: none; align-items: center; justify-content: center; font-weight: bold;">0</span> </button> <button class="icon-btn" onclick="openUser()" title="會員">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="#5A6855"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+       </svg></button>
+     </div>
+    </div><!-- Search Bar -->
+    <div id="searchBar" style="display: none; margin-top: 1rem; max-width: 500px; margin-left: auto; margin-right: auto;"><input type="text" id="searchInput" placeholder="搜尋商品..." class="input-field" oninput="searchProducts()">
+    </div>
+   </header><!-- Navigation -->
+   <nav style="background: rgba(255,255,255,0.9); padding: 0.7rem 2rem; position: sticky; top: 73px; z-index: 99; border-bottom: 3px solid rgba(168,188,165,0.2);">
+    <div style="max-width: 1400px; margin: 0 auto;">
+     <div class="nav-container"><button class="nav-btn active" onclick="navigate('home')">關於我們</button> <button class="nav-btn" onclick="navigate('all')">全系列🌸</button> <button class="nav-btn" onclick="navigate('silver')">純銀飾品✨</button> <button class="nav-btn" onclick="navigate('promo')">優惠活動🎁</button> <button class="nav-btn" onclick="navigate('knowledge')">飾品小知識💡</button> <button class="nav-btn" onclick="navigate('faq')">相關問題❗️</button>
+     </div>
+    </div>
+   </nav><!-- Main Content -->
+   <main style="max-width: 1400px; margin: 0 auto; padding: 2rem 2rem; min-height: calc(100% - 450px);"><!-- Home Page -->
+    <div id="homePage" class="page-section active">
+     <div style="text-align: center; margin-bottom: 2rem; opacity: 0.6;">
+      <h2 style="font-size: 1.5rem; color: #2D3C2D; margin-bottom: 0.6rem; letter-spacing: 0.1em;">十年一日</h2>
+      <p style="font-size: 0.95rem; color: #5A6855; margin-bottom: 0.3rem;">時光淬鍊 · 破碎中尋覓永恆</p>
+      <p style="font-size: 0.85rem; color: #6B7A66;">每一件飾品 都是時間的詩篇</p>
+     </div><!-- Top Announcements -->
+     <div id="announcementsList" style="margin-bottom: 1.5rem;"></div><!-- Intro Section -->
+     <div style="background: rgba(255,255,255,0.95); border-radius: 15px; padding: 2rem; max-width: 650px; margin: 0 auto 1.5rem; border: 3px solid rgba(168,188,165,0.25); box-shadow: 0 8px 30px rgba(168,188,165,0.2);">
+      <h3 style="font-size: 1.3rem; color: #3D4A39; margin-bottom: 0.7rem; text-align: center;">🤍 歡迎來到 十年一日</h3>
+      <p style="font-style: italic; text-align: center; margin-bottom: 0.3rem; color: #6B7A66; font-size: 0.95rem;">TEN YEARS ONE DAY</p>
+      <p style="font-style: italic; text-align: center; margin-bottom: 1.5rem; color: #8B9E88; font-size: 0.85rem;">Every piece tells a story.</p>
+      <div style="text-align: center; color: #5A6855; line-height: 1.9; font-size: 0.95rem;">
+       <p style="margin-bottom: 1rem;">承載著十年以上的友情，<br>
+        繼續延續下去的動力。</p>
+       <p style="margin-bottom: 1.5rem;">每一件飾品，<br>
+        都是時間累積的溫柔。</p>
+       <p style="font-weight: 700; color: #3D4A39; font-size: 1rem;">謝謝你，把重要的一天交給十年一日 ✨</p>
+      </div>
+     </div><!-- Bottom Announcements -->
+     <div id="announcementsListBottom" style="max-width: 650px; margin: 0 auto;"></div>
+    </div><!-- All Series Page -->
+    <div id="allPage" class="page-section">
+     <h2 style="font-size: 1.6rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">全系列 🌸</h2>
+     <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding: 0.3rem 0; justify-content: center; flex-wrap: wrap;"><button class="subcategory-btn active" onclick="filterSubcategory('all', 'all')">全部</button> <button class="subcategory-btn" onclick="filterSubcategory('all', 'necklace')">項鍊</button> <button class="subcategory-btn" onclick="filterSubcategory('all', 'bracelet')">手鏈</button> <button class="subcategory-btn" onclick="filterSubcategory('all', 'earring')">耳環</button> <button class="subcategory-btn" onclick="filterSubcategory('all', 'ring')">戒指</button>
+     </div>
+     <div id="allProducts" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;">
+      <p style="color: #6B7A66; text-align: center; padding: 3rem; grid-column: 1 / -1;">目前沒有商品</p>
+     </div>
+     <div id="adminAddAllProduct" style="display: none; margin-top: 2rem; text-align: center;"><button onclick="addProduct('all')" class="btn-primary" style="max-width: 300px; margin: 0 auto;">+ 新增商品</button>
+     </div>
+    </div><!-- Silver Products Page -->
+    <div id="silverPage" class="page-section">
+     <h2 style="font-size: 1.6rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">純銀飾品 ✨</h2>
+     <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding: 0.3rem 0; justify-content: center; flex-wrap: wrap;"><button class="subcategory-btn active" onclick="filterSubcategory('silver', 'all')">全部</button> <button class="subcategory-btn" onclick="filterSubcategory('silver', 'necklace')">項鍊</button> <button class="subcategory-btn" onclick="filterSubcategory('silver', 'bracelet')">手鏈</button> <button class="subcategory-btn" onclick="filterSubcategory('silver', 'earring')">耳環</button> <button class="subcategory-btn" onclick="filterSubcategory('silver', 'ring')">戒指</button>
+     </div>
+     <div id="silverProducts" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;">
+      <p style="color: #6B7A66; text-align: center; padding: 3rem; grid-column: 1 / -1;">目前沒有商品</p>
+     </div>
+     <div id="adminAddSilverProduct" style="display: none; margin-top: 2rem; text-align: center;"><button onclick="addProduct('silver')" class="btn-primary" style="max-width: 300px; margin: 0 auto;">+ 新增商品</button>
+     </div>
+    </div><!-- Promo Page -->
+    <div id="promoPage" class="page-section">
+     <h2 style="font-size: 1.6rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">優惠活動 🎁</h2>
+     <div id="promoList" style="max-width: 850px; margin: 0 auto;"></div>
+    </div><!-- Knowledge Page -->
+    <div id="knowledgePage" class="page-section">
+     <h2 style="font-size: 1.6rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">飾品小知識 💡</h2>
+     <div id="knowledgeList" style="max-width: 850px; margin: 0 auto;"></div>
+    </div><!-- FAQ Page -->
+    <div id="faqPage" class="page-section">
+     <h2 style="font-size: 1.6rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">相關問題 ❗️</h2>
+     <div style="max-width: 850px; margin: 0 auto;">
+      <div id="warningList" style="margin-bottom: 1.5rem;"></div>
+      <div id="cautionList" style="margin-bottom: 1.5rem;"></div>
+      <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.2rem;">常見問題</h3>
+      <div id="faqList"></div>
+     </div>
+    </div>
+   </main><!-- Footer -->
+   <footer style="background: linear-gradient(135deg, #2D3C2D, #3D4A39); color: #E8F0E5; padding: 2.5rem 2rem;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 2px solid rgba(212,231,209,0.2);">
+      <div style="text-align: left; font-size: 0.9rem; color: #B8C9A8; line-height: 1.8;">
+       <div style="font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600;">
+        💎 精選材質
+       </div>
+       <div>
+        不含鉛，安心佩戴
+       </div>
+      </div>
+      <div style="text-align: center; font-size: 0.9rem; color: #B8C9A8; line-height: 1.8;">
+       <div style="font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600;">
+        ✨ 獨特設計
+       </div>
+       <div>
+        韓日歐美風格齊聚
+       </div>
+      </div>
+      <div style="text-align: right; font-size: 0.9rem; color: #B8C9A8; line-height: 1.8;">
+       <div style="font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600;">
+        🚚 便利配送
+       </div>
+       <div>
+        超商取貨、宅配到府
+       </div>
+      </div>
+     </div>
+     <div style="text-align: center;">
+      <h3 style="font-size: 1.4rem; color: #D4E7D1; margin-bottom: 0.4rem;">十年一日</h3>
+      <p style="font-size: 0.9rem; color: #B8C9A8; font-style: italic;">tenyears_oneday</p>
+     </div>
+    </div>
+   </footer><!-- Admin Link -->
+   <div class="admin-link" onclick="openAdminLogin()"></div><!-- Admin FAB -->
+   <div id="adminFab" class="admin-fab" onclick="openAdminPanel()">
+    <svg width="26" height="26" viewbox="0 0 24 24" fill="white"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
+    </svg>
+   </div>
+  </div><!-- Modals -->
+  <div id="loginModal" class="modal-overlay"></div>
+  <div id="cartModal" class="modal-overlay"></div>
+  <div id="productModal" class="modal-overlay"></div>
+  <div id="adminModal" class="modal-overlay"></div>
+  <div id="checkoutModal" class="modal-overlay"></div><!-- Confirm Dialog -->
+  <div id="confirmOverlay" class="confirm-overlay">
+   <div class="confirm-box">
+    <h3 id="confirmTitle" style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1rem;"></h3>
+    <p id="confirmMessage" style="color: #5A6855; margin-bottom: 1.5rem;"></p>
+    <div style="display: flex; gap: 1rem;"><button onclick="closeConfirm()" style="flex: 1; padding: 0.8rem; background: #D1D5DB; color: #374151; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;">取消</button> <button id="confirmBtn" style="flex: 1; padding: 0.8rem; background: #DC2626; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;">確認</button>
+    </div>
+   </div>
+  </div>
+  <script>
+    let data = [];
+    let user = null;
+    let isAdmin = false;
+    let currentPage = 'home';
+    let currentCategory = 'all';
+    let currentSubcategory = 'all';
+    let searchQuery = '';
+    
+    const handler = {
+      onDataChanged(records) {
+        data = records;
+        renderProducts();
+        updateCart();
+        renderAnnouncements();
+        renderPromos();
+        renderKnowledge();
+        renderFAQ();
+      }
+    };
+
+    async function init() {
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(handler);
+        if (!result.isOk) {
+          console.error('初始化失敗');
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    function navigate(page) {
+      currentPage = page;
+      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(page + 'Page').classList.add('active');
+      
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      if (page === 'all') {
+        currentCategory = 'all';
+        currentSubcategory = 'all';
+        document.querySelectorAll('#allPage .subcategory-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('#allPage .subcategory-btn').classList.add('active');
+      } else if (page === 'silver') {
+        currentCategory = 'silver';
+        currentSubcategory = 'all';
+        document.querySelectorAll('#silverPage .subcategory-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('#silverPage .subcategory-btn').classList.add('active');
+      }
+      
+      renderProducts();
+      window.scrollTo(0, 0);
+    }
+
+    function filterSubcategory(category, subcategory) {
+      currentCategory = category;
+      currentSubcategory = subcategory;
+      
+      const container = category === 'all' ? document.getElementById('allPage') : document.getElementById('silverPage');
+      container.querySelectorAll('.subcategory-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const allProducts = data.filter(r => r.product_id && r.product_category === 'all' && r.product_status !== 'deleted');
+      const silverProducts = data.filter(r => r.product_id && r.product_category === 'silver' && r.product_status !== 'deleted');
+      
+      renderProductList('allProducts', allProducts, 'all');
+      renderProductList('silverProducts', silverProducts, 'silver');
+      
+      document.getElementById('adminAddAllProduct').style.display = isAdmin ? 'block' : 'none';
+      document.getElementById('adminAddSilverProduct').style.display = isAdmin ? 'block' : 'none';
+    }
+
+    function renderProductList(containerId, products, category) {
+      const container = document.getElementById(containerId);
+      
+      let filtered = products;
+      
+      if (currentCategory === category && currentSubcategory !== 'all') {
+        filtered = products.filter(p => p.product_subcategory === currentSubcategory);
+      }
+      
+      if (searchQuery) {
+        filtered = filtered.filter(p => p.product_name.toLowerCase().includes(searchQuery.toLowerCase()));
+      }
+      
+      if (filtered.length === 0) {
+        container.innerHTML = '<p style="color: #6B7A66; text-align: center; padding: 3rem; grid-column: 1 / -1;">尚無商品</p>';
+        return;
+      }
+      
+      container.innerHTML = filtered.map(p => {
+        const images = p.product_images ? p.product_images.split(',') : [];
+        const firstImage = images[0] || '';
+        
+        return `
+          <div class="product-card" onclick="viewProduct('${p.__backendId}')">
+            <div style="width: 100%; padding-top: 100%; position: relative; background: #F8F9F7;">
+              ${firstImage ? `<img src="${firstImage}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='圖片載入失敗'; this.style.display='none'; this.parentElement.innerHTML='<div style=\\'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;\\'>📷</div>'">` : '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem;">📷</div>'}
+            </div>
+            <div style="padding: 1rem;">
+              <h4 style="font-size: 0.95rem; color: #3D4A39; margin-bottom: 0.5rem; min-height: 2rem; line-height: 1.3;">${p.product_name}</h4>
+              <p style="font-size: 1.1rem; color: #8B9E88; font-weight: 700;">NT$ ${p.product_price}</p>
+              ${p.product_status === 'sold_out' ? '<p style="color: #DC2626; font-size: 0.8rem; margin-top: 0.3rem;">已售完</p>' : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function viewProduct(id) {
+      const p = data.find(r => r.__backendId === id);
+      if (!p) return;
+      
+      const images = p.product_images ? p.product_images.split(',') : [];
+      const styles = p.product_styles ? p.product_styles.split('\n').filter(s => s.trim()) : [];
+      
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box" style="max-width: 650px;">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          
+          ${images.length > 0 ? `
+            <div style="margin-bottom: 1.2rem;">
+              <div style="width: 100%; padding-top: 100%; position: relative; background: #F8F9F7; border-radius: 12px; overflow: hidden; margin-bottom: 0.8rem;">
+                <img id="mainImage" src="${images[0]}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.style.display='none'">
+              </div>
+              ${images.length > 1 ? `
+                <div style="display: flex; gap: 0.6rem; overflow-x: auto;">
+                  ${images.map((img, idx) => `
+                    <div onclick="document.getElementById('mainImage').src='${img}'" style="width: 70px; height: 70px; flex-shrink: 0; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid ${idx === 0 ? '#8B9E88' : 'rgba(168,188,165,0.3)'};">
+                      <img src="${img}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.style.display='none'">
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+            </div>
+          ` : ''}
+          
+          <h3 style="font-size: 1.3rem; color: #3D4A39; margin-bottom: 0.7rem; text-align: center;">${p.product_name}</h3>
+          <p style="font-size: 1.6rem; color: #8B9E88; font-weight: 700; margin-bottom: 1.2rem; text-align: center;">NT$ ${p.product_price}</p>
+          
+          ${p.product_status === 'sold_out' ? `
+            <div style="background: rgba(220,38,38,0.1); border: 2px solid #DC2626; border-radius: 10px; padding: 0.9rem; margin-bottom: 1.2rem; text-align: center;">
+              <p style="color: #DC2626; font-weight: 700;">此商品已售完</p>
+            </div>
+          ` : `
+            ${styles.length > 0 ? `
+              <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">款式</label>
+                <select id="styleSelect" class="input-field">
+                  <option value="">請選擇款式</option>
+                  ${styles.map(s => `<option value="${s}">${s}</option>`).join('')}
+                </select>
+              </div>
+            ` : ''}
+            
+            <div style="margin-bottom: 1.2rem;">
+              <label style="display: block; margin-bottom: 0.5rem; color: #3D4A39; font-weight: 600; text-align: center; font-size: 0.9rem;">數量</label>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 0.9rem;">
+                <button onclick="changeQty(-1)" style="width: 38px; height: 38px; background: #8B9E88; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.3rem;">-</button>
+                <input type="number" id="qtyInput" value="1" min="1" style="width: 70px; text-align: center; border: 2px solid rgba(168,188,165,0.3); border-radius: 8px; padding: 0.5rem; font-size: 1rem;">
+                <button onclick="changeQty(1)" style="width: 38px; height: 38px; background: #8B9E88; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.3rem;">+</button>
+              </div>
+            </div>
+            
+            <button class="btn-primary" onclick="addToCart('${id}')">加入購物車</button>
+          `}
+          
+          ${isAdmin ? `
+            <div style="margin-top: 1.2rem; padding-top: 1.2rem; border-top: 2px solid rgba(168,188,165,0.2);">
+              <p style="font-size: 0.8rem; color: #6B7A66; margin-bottom: 0.2rem;">編碼: ${p.product_code || '未設定'}</p>
+              <p style="font-size: 0.8rem; color: #6B7A66;">廠商: ${p.product_supplier || '未設定'}</p>
+              <div style="display: flex; gap: 0.6rem; margin-top: 0.8rem;">
+                <button onclick="editProduct('${p.__backendId}')" style="flex: 1; padding: 0.6rem; background: #8B9E88; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">編輯</button>
+                <button onclick="confirmDelete('product', '${p.__backendId}', '${p.product_name}')" style="flex: 1; padding: 0.6rem; background: #DC2626; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">刪除</button>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function changeQty(delta) {
+      const input = document.getElementById('qtyInput');
+      const newVal = parseInt(input.value) + delta;
+      if (newVal >= 1) input.value = newVal;
+    }
+
+    async function addToCart(productId) {
+      if (!user) {
+        showToast('請先登入會員');
+        closeModal('productModal');
+        openLogin();
+        return;
+      }
+      
+      const p = data.find(r => r.__backendId === productId);
+      if (p.product_status === 'sold_out') {
+        showToast('此商品已售完');
+        return;
+      }
+      
+      const styleSelect = document.getElementById('styleSelect');
+      const selectedStyle = styleSelect ? styleSelect.value : '';
+      
+      if (styleSelect && !selectedStyle) {
+        showToast('請選擇款式');
+        return;
+      }
+      
+      const qty = parseInt(document.getElementById('qtyInput').value);
+      
+      if (data.filter(r => r.cart_id).length >= 999) {
+        showToast('購物車已達上限');
+        return;
+      }
+      
+      const existing = data.find(r => r.cart_id && r.cart_user === user.user_phone && r.cart_product_id === productId && r.cart_style === selectedStyle);
+      
+      if (existing) {
+        const updated = {...existing, cart_quantity: existing.cart_quantity + qty};
+        const result = await window.dataSdk.update(updated);
+        if (result.isOk) {
+          showToast('已更新購物車數量');
+          closeModal('productModal');
+        } else {
+          showToast('操作失敗');
+        }
+      } else {
+        const result = await window.dataSdk.create({
+          cart_id: 'CART' + Date.now() + Math.random(),
+          cart_user: user.user_phone,
+          cart_product_id: productId,
+          cart_quantity: qty,
+          cart_style: selectedStyle
+        });
+        if (result.isOk) {
+          showToast('已加入購物車');
+          closeModal('productModal');
+        } else {
+          showToast('操作失敗');
+        }
+      }
+    }
+
+    function updateCart() {
+      if (!user) {
+        document.getElementById('cartBadge').style.display = 'none';
+        return;
+      }
+      
+      const cart = data.filter(r => r.cart_id && r.cart_user === user.user_phone);
+      const total = cart.reduce((sum, item) => sum + item.cart_quantity, 0);
+      
+      if (total > 0) {
+        document.getElementById('cartBadge').textContent = total;
+        document.getElementById('cartBadge').style.display = 'flex';
+      } else {
+        document.getElementById('cartBadge').style.display = 'none';
+      }
+    }
+
+    function openCart() {
+      if (!user) {
+        showToast('請先登入會員');
+        openLogin();
+        return;
+      }
+      
+      const cart = data.filter(r => r.cart_id && r.cart_user === user.user_phone);
+      
+      if (cart.length === 0) {
+        showToast('購物車是空的');
+        return;
+      }
+      
+      let subtotal = 0;
+      const items = cart.map(c => {
+        const p = data.find(r => r.__backendId === c.cart_product_id);
+        if (!p) return '';
+        const total = p.product_price * c.cart_quantity;
+        subtotal += total;
+        
+        const images = p.product_images ? p.product_images.split(',') : [];
+        const firstImage = images[0] || '';
+        
+        return `
+          <div style="background: #F8F9F7; padding: 0.9rem; border-radius: 10px; margin-bottom: 0.7rem; display: flex; gap: 0.9rem; align-items: center;">
+            <div style="width: 60px; height: 60px; flex-shrink: 0; background: white; border-radius: 8px; overflow: hidden;">
+              ${firstImage ? `<img src="${firstImage}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.style.display='none'">` : '<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.8rem;">📷</div>'}
+            </div>
+            <div style="flex: 1;">
+              <h4 style="font-size: 0.9rem; color: #3D4A39; margin-bottom: 0.2rem;">${p.product_name}</h4>
+              ${c.cart_style ? `<p style="font-size: 0.75rem; color: #6B7A66; margin-bottom: 0.2rem;">款式: ${c.cart_style}</p>` : ''}
+              <p style="font-size: 0.8rem; color: #8B9E88;">NT$ ${p.product_price} × ${c.cart_quantity}</p>
+            </div>
+            <div style="text-align: right;">
+              <p style="font-size: 0.95rem; color: #3D4A39; font-weight: 700; margin-bottom: 0.4rem;">NT$ ${total}</p>
+              <button onclick="confirmDelete('cart', '${c.__backendId}', '購物車項目')" style="padding: 0.3rem 0.7rem; background: #DC2626; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.75rem;">刪除</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      const modal = document.getElementById('cartModal');
+      modal.innerHTML = `
+        <div class="modal-box" style="max-width: 550px;">
+          <button class="close-btn" onclick="closeModal('cartModal')">×</button>
+          <h3 style="font-size: 1.3rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">🛒 購物車</h3>
+          
+          <div style="max-height: 350px; overflow-y: auto; margin-bottom: 1rem;">
+            ${items}
+          </div>
+          
+          <div style="border-top: 3px solid rgba(168,188,165,0.3); padding-top: 0.9rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 1.2rem; color: #3D4A39; font-weight: 700;">
+              <span>小計</span>
+              <span>NT$ ${subtotal}</span>
+            </div>
+          </div>
+          
+          <button class="btn-primary" onclick="goToCheckout(${subtotal})">前往結帳</button>
+          <button class="btn-primary" onclick="closeModal('cartModal')" style="background: linear-gradient(135deg, #A8BCA5, #8B9E88); margin-top: 0.7rem;">繼續購物</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function goToCheckout(subtotal) {
+      closeModal('cartModal');
+      
+      const cart = data.filter(r => r.cart_id && r.cart_user === user.user_phone);
+      
+      const currentMonth = new Date().getMonth() + 1;
+      const isBirthday = user.user_birth_month === currentMonth;
+      const isFirstPurchase = user.user_first_purchase === true || user.user_first_purchase === undefined;
+      
+      let discount = 1;
+      let discountText = '';
+      
+      if (isBirthday) {
+        discount = 0.85;
+        discountText = '🎂 當月壽星85折';
+      } else if (isFirstPurchase) {
+        discount = 0.9;
+        discountText = '🎉 首購9折';
+      }
+      
+      const discountedSubtotal = Math.round(subtotal * discount);
+      const shipping = discountedSubtotal >= 1000 ? 0 : 70;
+      const total = discountedSubtotal + shipping;
+      
+      const modal = document.getElementById('checkoutModal');
+      modal.innerHTML = `
+        <div class="modal-box" style="max-width: 650px;">
+          <button class="close-btn" onclick="closeModal('checkoutModal')">×</button>
+          <h3 style="font-size: 1.3rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">結帳</h3>
+          
+          <div style="background: #F8F9F7; padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+            <h4 style="color: #3D4A39; margin-bottom: 0.7rem; font-size: 1rem;">訂單明細</h4>
+            ${cart.map(c => {
+              const p = data.find(r => r.__backendId === c.cart_product_id);
+              if (!p) return '';
+              return `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem; font-size: 0.85rem; color: #5A6855;">
+                  <span>${p.product_name} ${c.cart_style ? '(' + c.cart_style + ')' : ''} × ${c.cart_quantity}</span>
+                  <span>NT$ ${p.product_price * c.cart_quantity}</span>
+                </div>
+              `;
+            }).join('')}
+            
+            <div style="border-top: 2px solid rgba(168,188,165,0.3); margin-top: 0.7rem; padding-top: 0.7rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem; color: #5A6855; font-size: 0.9rem;">
+                <span>商品小計</span>
+                <span>NT$ ${subtotal}</span>
+              </div>
+              ${discount < 1 ? `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem; color: #10B981; font-weight: 600; font-size: 0.9rem;">
+                  <span>${discountText}</span>
+                  <span>-NT$ ${subtotal - discountedSubtotal}</span>
+                </div>
+              ` : ''}
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.7rem; color: ${shipping === 0 ? '#10B981' : '#5A6855'}; font-size: 0.9rem;">
+                <span>運費 ${discountedSubtotal >= 1000 ? '(滿千免運)' : ''}</span>
+                <span>${shipping === 0 ? '免運' : 'NT$ ' + shipping}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 1.2rem; color: #3D4A39; font-weight: 700;">
+                <span>總計</span>
+                <span>NT$ ${total}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">收件人姓名</label>
+            <input type="text" id="checkoutName" class="input-field" value="${user.user_name}">
+          </div>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">聯絡電話</label>
+            <input type="tel" id="checkoutPhone" class="input-field" value="${user.user_phone}" readonly style="background: #F8F9F7;">
+          </div>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">配送方式</label>
+            <select id="shippingMethod" class="input-field" onchange="updateShippingMethod()">
+              <option value="home">宅配到府 - NT$ 70 ${discountedSubtotal >= 1000 ? '(已免運)' : ''}</option>
+              <option value="711">7-11超商取貨 - NT$ 70 ${discountedSubtotal >= 1000 ? '(已免運)' : ''}</option>
+              <option value="family">全家超商取貨 - NT$ 70 ${discountedSubtotal >= 1000 ? '(已免運)' : ''}</option>
+            </select>
+          </div>
+          
+          <div id="addressDiv" style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">配送地址</label>
+            <input type="text" id="checkoutAddress" class="input-field" value="${user.user_address || ''}" placeholder="請輸入配送地址">
+          </div>
+          
+          <div id="storeSelectDiv" style="display: none; margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">選擇門市</label>
+            <div style="display: flex; gap: 0.7rem; margin-bottom: 0.7rem;">
+              <a id="storeLink711" href="https://emap.pcsc.com.tw/emap.aspx" target="_blank" rel="noopener noreferrer" style="flex: 1; padding: 0.7rem; background: #10B981; color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.85rem;">7-11門市查詢</a>
+              <a id="storeLinkFamily" href="https://www.family.com.tw/Marketing/zh/Map" target="_blank" rel="noopener noreferrer" style="flex: 1; padding: 0.7rem; background: #3B82F6; color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: none;">全家門市查詢</a>
+            </div>
+            <input type="text" id="storeName" class="input-field" placeholder="請輸入門市名稱（例：台北中山店）">
+          </div>
+          
+          <button class="btn-primary" onclick="confirmCheckout(${total}, ${discount}, '${discountText}')" id="checkoutBtn">確認訂單</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function updateShippingMethod() {
+      const method = document.getElementById('shippingMethod').value;
+      const addressDiv = document.getElementById('addressDiv');
+      const storeDiv = document.getElementById('storeSelectDiv');
+      const link711 = document.getElementById('storeLink711');
+      const linkFamily = document.getElementById('storeLinkFamily');
+      
+      if (method === 'home') {
+        addressDiv.style.display = 'block';
+        storeDiv.style.display = 'none';
+      } else if (method === '711') {
+        addressDiv.style.display = 'none';
+        storeDiv.style.display = 'block';
+        link711.style.display = 'block';
+        linkFamily.style.display = 'none';
+      } else if (method === 'family') {
+        addressDiv.style.display = 'none';
+        storeDiv.style.display = 'block';
+        link711.style.display = 'none';
+        linkFamily.style.display = 'block';
+      }
+    }
+
+    async function confirmCheckout(total, discount, discountText) {
+      const name = document.getElementById('checkoutName').value.trim();
+      const shippingMethod = document.getElementById('shippingMethod').value;
+      const address = document.getElementById('checkoutAddress') ? document.getElementById('checkoutAddress').value.trim() : '';
+      const storeName = document.getElementById('storeName') ? document.getElementById('storeName').value.trim() : '';
+      
+      if (!name) {
+        showToast('請填寫收件人姓名');
+        return;
+      }
+      
+      if (shippingMethod === 'home' && !address) {
+        showToast('請填寫配送地址');
+        return;
+      }
+      
+      if ((shippingMethod === '711' || shippingMethod === 'family') && !storeName) {
+        showToast('請輸入門市名稱');
+        return;
+      }
+      
+      if (data.filter(r => r.order_id).length >= 999) {
+        showToast('訂單數量已達上限');
+        return;
+      }
+      
+      const btn = document.getElementById('checkoutBtn');
+      btn.disabled = true;
+      btn.textContent = '處理中...';
+      
+      const cart = data.filter(r => r.cart_id && r.cart_user === user.user_phone);
+      const orderItems = cart.map(c => {
+        const p = data.find(r => r.__backendId === c.cart_product_id);
+        return {
+          name: p.product_name,
+          style: c.cart_style,
+          quantity: c.cart_quantity,
+          price: p.product_price
+        };
+      });
+      
+      let shippingText = '';
+      if (shippingMethod === 'home') {
+        shippingText = '宅配到府 - ' + address;
+      } else if (shippingMethod === '711') {
+        shippingText = '7-11超商取貨 - ' + storeName;
+      } else {
+        shippingText = '全家超商取貨 - ' + storeName;
+      }
+      
+      const result = await window.dataSdk.create({
+        order_id: 'ORD' + Date.now(),
+        order_user: user.user_phone,
+        order_items: JSON.stringify(orderItems),
+        order_total: total,
+        order_date: new Date().toISOString(),
+        order_shipping: shippingText,
+        order_store: storeName
+      });
+      
+      if (result.isOk) {
+        for (const c of cart) {
+          await window.dataSdk.delete(c);
+        }
+        
+        if (user.user_first_purchase === true || user.user_first_purchase === undefined) {
+          const updatedUser = {...user, user_first_purchase: false};
+          await window.dataSdk.update(updatedUser);
+          user = updatedUser;
+        }
+        
+        const updatedAddress = {...user, user_name: name, user_address: address};
+        await window.dataSdk.update(updatedAddress);
+        user = updatedAddress;
+        
+        showToast('訂單完成！感謝您的購買');
+        closeModal('checkoutModal');
+      } else {
+        showToast('訂單失敗，請重試');
+        btn.disabled = false;
+        btn.textContent = '確認訂單';
+      }
+    }
+
+    function openUser() {
+      if (!user) {
+        openLogin();
+        return;
+      }
+      
+      const orders = data.filter(r => r.order_id && r.order_user === user.user_phone);
+      const currentMonth = new Date().getMonth() + 1;
+      const isBirthday = user.user_birth_month === currentMonth;
+      
+      const modal = document.getElementById('loginModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('loginModal')">×</button>
+          <h3 style="font-size: 1.3rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">會員資料</h3>
+          
+          <div style="background: #F8F9F7; padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+            <div style="margin-bottom: 0.5rem;">
+              <label style="display: block; margin-bottom: 0.2rem; color: #6B7A66; font-size: 0.8rem;">姓名</label>
+              <input type="text" id="editName" value="${user.user_name}" class="input-field">
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+              <label style="display: block; margin-bottom: 0.2rem; color: #6B7A66; font-size: 0.8rem;">電話</label>
+              <input type="tel" value="${user.user_phone}" class="input-field" readonly style="background: rgba(0,0,0,0.05);">
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+              <label style="display: block; margin-bottom: 0.2rem; color: #6B7A66; font-size: 0.8rem;">地址</label>
+              <input type="text" id="editAddress" value="${user.user_address || ''}" class="input-field" placeholder="請輸入地址">
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+              <label style="display: block; margin-bottom: 0.2rem; color: #6B7A66; font-size: 0.8rem;">生日 ${isBirthday ? '🎂' : ''}</label>
+              ${user.user_birth_month && user.user_birth_day ? `
+                <input type="text" value="${user.user_birth_month}月${user.user_birth_day}日" class="input-field" readonly style="background: rgba(0,0,0,0.05);">
+              ` : `
+                <div style="display: flex; gap: 0.4rem;">
+                  <select id="birthMonth" class="input-field">
+                    <option value="">月</option>
+                    ${Array.from({length: 12}, (_, i) => `<option value="${i+1}">${i+1}月</option>`).join('')}
+                  </select>
+                  <select id="birthDay" class="input-field">
+                    <option value="">日</option>
+                    ${Array.from({length: 31}, (_, i) => `<option value="${i+1}">${i+1}日</option>`).join('')}
+                  </select>
+                </div>
+              `}
+            </div>
+            <button class="btn-primary" onclick="updateUserInfo()" style="margin-top: 0.7rem;">儲存資料</button>
+          </div>
+          
+          ${orders.length > 0 ? `
+            <div style="margin-bottom: 1rem;">
+              <h4 style="font-size: 1rem; color: #3D4A39; margin-bottom: 0.7rem;">訂單紀錄</h4>
+              <div style="max-height: 280px; overflow-y: auto;">
+                ${orders.map(o => {
+                  const date = new Date(o.order_date);
+                  const items = JSON.parse(o.order_items);
+                  return `
+                    <div style="background: #F8F9F7; padding: 0.9rem; border-radius: 10px; margin-bottom: 0.7rem;">
+                      <p style="font-size: 0.8rem; color: #6B7A66; margin-bottom: 0.2rem;">訂單編號: ${o.order_id}</p>
+                      <p style="font-size: 0.8rem; color: #6B7A66; margin-bottom: 0.4rem;">訂購時間: ${date.toLocaleDateString('zh-TW')} ${date.toLocaleTimeString('zh-TW')}</p>
+                      <div style="margin-bottom: 0.4rem; font-size: 0.8rem; color: #5A6855;">
+                        ${items.map(item => `<p>• ${item.name} ${item.style ? '(' + item.style + ')' : ''} × ${item.quantity}</p>`).join('')}
+                      </div>
+                      <p style="font-size: 0.8rem; color: #6B7A66; margin-bottom: 0.2rem;">配送方式: ${o.order_shipping}</p>
+                      <p style="font-size: 0.95rem; color: #3D4A39; font-weight: 700;">總額: NT$ ${o.order_total}</p>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          ` : ''}
+          
+          <button class="btn-primary" onclick="logout()">登出</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    async function updateUserInfo() {
+      const name = document.getElementById('editName').value.trim();
+      const address = document.getElementById('editAddress').value.trim();
+      
+      if (!name) {
+        showToast('請輸入姓名');
+        return;
+      }
+      
+      let updatedUser = {...user, user_name: name, user_address: address};
+      
+      if (!user.user_birth_month && !user.user_birth_day) {
+        const monthSelect = document.getElementById('birthMonth');
+        const daySelect = document.getElementById('birthDay');
+        
+        if (monthSelect && daySelect) {
+          const month = parseInt(monthSelect.value);
+          const day = parseInt(daySelect.value);
+          
+          if (month && day) {
+            updatedUser.user_birth_month = month;
+            updatedUser.user_birth_day = day;
+          }
+        }
+      }
+      
+      const result = await window.dataSdk.update(updatedUser);
+      if (result.isOk) {
+        user = updatedUser;
+        showToast('資料已更新');
+        openUser();
+      } else {
+        showToast('更新失敗');
+      }
+    }
+
+    function openLogin() {
+      const modal = document.getElementById('loginModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('loginModal')">×</button>
+          <h3 style="font-size: 1.3rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">會員登入</h3>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">手機號碼</label>
+            <input type="tel" id="loginPhone" class="input-field" placeholder="0912345678" maxlength="10">
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">密碼</label>
+            <input type="password" id="loginPassword" class="input-field">
+          </div>
+          
+          <button class="btn-primary" onclick="login()" style="margin-bottom: 0.7rem;">登入</button>
+          <button class="btn-primary" onclick="openRegister()" style="background: linear-gradient(135deg, #A8BCA5, #8B9E88);">註冊新會員</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function openRegister() {
+      const modal = document.getElementById('loginModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('loginModal')">×</button>
+          <h3 style="font-size: 1.3rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">會員註冊</h3>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">手機號碼</label>
+            <input type="tel" id="regPhone" class="input-field" placeholder="0912345678" maxlength="10">
+          </div>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">密碼</label>
+            <input type="password" id="regPassword" class="input-field">
+          </div>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">姓名</label>
+            <input type="text" id="regName" class="input-field">
+          </div>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">地址</label>
+            <input type="text" id="regAddress" class="input-field" placeholder="請輸入地址">
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">生日</label>
+            <div style="display: flex; gap: 0.4rem;">
+              <select id="regBirthMonth" class="input-field">
+                <option value="">月</option>
+                ${Array.from({length: 12}, (_, i) => `<option value="${i+1}">${i+1}月</option>`).join('')}
+              </select>
+              <select id="regBirthDay" class="input-field">
+                <option value="">日</option>
+                ${Array.from({length: 31}, (_, i) => `<option value="${i+1}">${i+1}日</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          
+          <button class="btn-primary" onclick="register()" id="regBtn" style="margin-bottom: 0.7rem;">註冊</button>
+          <button class="btn-primary" onclick="openLogin()" style="background: linear-gradient(135deg, #A8BCA5, #8B9E88);">返回登入</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    async function register() {
+      const phone = document.getElementById('regPhone').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const name = document.getElementById('regName').value.trim();
+      const address = document.getElementById('regAddress').value.trim();
+      const birthMonth = parseInt(document.getElementById('regBirthMonth').value);
+      const birthDay = parseInt(document.getElementById('regBirthDay').value);
+      
+      if (!phone || !password || !name) {
+        showToast('請填寫必填欄位（手機、密碼、姓名）');
+        return;
+      }
+      
+      const phonePattern = /^09\d{8}$/;
+      if (!phonePattern.test(phone)) {
+        showToast('請輸入正確的手機號碼（09開頭，共10碼）');
+        return;
+      }
+      
+      if (data.filter(r => r.user_phone && r.user_phone.length === 10).length >= 999) {
+        showToast('會員數量已達上限');
+        return;
+      }
+      
+      const existing = data.find(r => r.user_phone === phone);
+      if (existing) {
+        showToast('此手機號碼已註冊');
+        return;
+      }
+      
+      const btn = document.getElementById('regBtn');
+      btn.disabled = true;
+      btn.textContent = '註冊中...';
+      
+      const result = await window.dataSdk.create({
+        user_phone: phone,
+        user_password: password,
+        user_name: name,
+        user_address: address,
+        user_birth_month: birthMonth || null,
+        user_birth_day: birthDay || null,
+        user_first_purchase: true
+      });
+      
+      if (result.isOk) {
+        showToast('註冊成功！');
+        const newUser = data.find(r => r.user_phone === phone);
+        if (newUser) {
+          user = newUser;
+          closeModal('loginModal');
+          updateCart();
+          setTimeout(() => openUser(), 500);
+        }
+      } else {
+        showToast('註冊失敗');
+        btn.disabled = false;
+        btn.textContent = '註冊';
+      }
+    }
+
+    function login() {
+      const phone = document.getElementById('loginPhone').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      
+      const u = data.find(r => r.user_phone === phone && r.user_password === password);
+      
+      if (u) {
+        user = u;
+        showToast('登入成功！');
+        closeModal('loginModal');
+        updateCart();
+      } else {
+        showToast('帳號或密碼錯誤');
+      }
+    }
+
+    function logout() {
+      user = null;
+      isAdmin = false;
+      closeModal('loginModal');
+      showToast('已登出');
+      updateCart();
+      document.getElementById('adminFab').style.display = 'none';
+      renderProducts();
+      renderAnnouncements();
+    }
+
+    function toggleSearch() {
+      const searchBar = document.getElementById('searchBar');
+      if (searchBar.style.display === 'none' || !searchBar.style.display) {
+        searchBar.style.display = 'block';
+        document.getElementById('searchInput').focus();
+      } else {
+        searchBar.style.display = 'none';
+        searchQuery = '';
+        document.getElementById('searchInput').value = '';
+        renderProducts();
+      }
+    }
+
+    function searchProducts() {
+      searchQuery = document.getElementById('searchInput').value;
+      renderProducts();
+    }
+
+    function renderAnnouncements() {
+      const announcements = data.filter(r => r.announcement_id).sort((a, b) => new Date(b.announcement_date) - new Date(a.announcement_date));
+      
+      const topAnnouncements = announcements.slice(0, Math.ceil(announcements.length / 2));
+      const bottomAnnouncements = announcements.slice(Math.ceil(announcements.length / 2));
+      
+      document.getElementById('announcementsList').innerHTML = topAnnouncements.map(a => `
+        <div class="announcement-box" style="position: relative;">
+          ${isAdmin ? `<button onclick="confirmDelete('announcement', '${a.__backendId}', '公告')" style="position: absolute; top: 0.7rem; right: 0.7rem; background: #DC2626; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">刪除</button>` : ''}
+          <p style="font-size: 0.85rem; color: #854D0E; white-space: pre-wrap;">${a.announcement_content}</p>
+        </div>
+      `).join('');
+      
+      document.getElementById('announcementsListBottom').innerHTML = bottomAnnouncements.map(a => `
+        <div class="announcement-box" style="position: relative;">
+          ${isAdmin ? `<button onclick="confirmDelete('announcement', '${a.__backendId}', '公告')" style="position: absolute; top: 0.7rem; right: 0.7rem; background: #DC2626; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">刪除</button>` : ''}
+          <p style="font-size: 0.85rem; color: #854D0E; white-space: pre-wrap;">${a.announcement_content}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderPromos() {
+      const promos = data.filter(r => r.promo_id);
+      const container = document.getElementById('promoList');
+      
+      if (promos.length === 0 && !isAdmin) {
+        container.innerHTML = '<p style="color: #6B7A66; text-align: center; padding: 3rem;">目前沒有優惠活動</p>';
+        return;
+      }
+      
+      const colorMap = {
+        yellow: {bg: 'rgba(254, 249, 195, 0.6)', border: '#FDE047', text: '#854D0E'},
+        blue: {bg: 'rgba(219, 234, 254, 0.6)', border: '#60A5FA', text: '#1E40AF'},
+        pink: {bg: 'rgba(252, 231, 243, 0.6)', border: '#F9A8D4', text: '#9F1239'},
+        purple: {bg: 'rgba(243, 232, 255, 0.6)', border: '#C084FC', text: '#6B21A8'}
+      };
+      
+      container.innerHTML = promos.map(p => {
+        const colors = colorMap[p.promo_color] || colorMap.yellow;
+        return `
+          <div style="background: ${colors.bg}; border-left: 5px solid ${colors.border}; border-radius: 10px; padding: 1.2rem; margin-bottom: 1.2rem; position: relative;">
+            ${isAdmin ? `
+              <div style="position: absolute; top: 0.9rem; right: 0.9rem; display: flex; gap: 0.4rem;">
+                <button onclick="editPromo('${p.__backendId}')" style="background: #8B9E88; color: white; border: none; padding: 0.35rem 0.7rem; border-radius: 5px; cursor: pointer; font-size: 0.75rem;">編輯</button>
+                <button onclick="confirmDelete('promo', '${p.__backendId}', '優惠活動')" style="background: #DC2626; color: white; border: none; padding: 0.35rem 0.7rem; border-radius: 5px; cursor: pointer; font-size: 0.75rem;">刪除</button>
+              </div>
+            ` : ''}
+            <h4 style="font-size: 1.1rem; color: ${colors.text}; margin-bottom: 0.7rem; font-weight: 700;">${p.promo_title}</h4>
+            <p style="font-size: 0.95rem; color: ${colors.text}; white-space: pre-wrap; line-height: 1.6;">${p.promo_content}</p>
+          </div>
+        `;
+      }).join('');
+      
+      if (isAdmin) {
+        container.innerHTML += `
+          <button onclick="addPromo()" style="width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #8B9E88, #6B7A66); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: 600;">新增優惠活動</button>
+        `;
+      }
+    }
+
+    function renderKnowledge() {
+      const knowledge = data.filter(r => r.knowledge_id);
+      const container = document.getElementById('knowledgeList');
+      
+      if (knowledge.length === 0 && !isAdmin) {
+        container.innerHTML = '<p style="color: #6B7A66; text-align: center; padding: 3rem;">目前沒有飾品小知識</p>';
+        return;
+      }
+      
+      container.innerHTML = knowledge.map(k => `
+        <div style="background: rgba(255,255,255,0.9); border-radius: 10px; padding: 1.2rem; margin-bottom: 1rem; border: 2px solid rgba(168,188,165,0.3); position: relative;">
+          ${isAdmin ? `
+            <div style="position: absolute; top: 0.9rem; right: 0.9rem; display: flex; gap: 0.4rem;">
+              <button onclick="editKnowledge('${k.__backendId}')" style="background: #8B9E88; color: white; border: none; padding: 0.35rem 0.7rem; border-radius: 5px; cursor: pointer; font-size: 0.75rem;">編輯</button>
+              <button onclick="confirmDelete('knowledge', '${k.__backendId}', '飾品小知識')" style="background: #DC2626; color: white; border: none; padding: 0.35rem 0.7rem; border-radius: 5px; cursor: pointer; font-size: 0.75rem;">刪除</button>
+            </div>
+          ` : ''}
+          <h4 style="font-size: 0.95rem; color: #3D4A39; margin-bottom: 0.7rem; font-weight: 600;">${k.knowledge_title}</h4>
+          <p style="font-size: 0.85rem; color: #5A6855; white-space: pre-wrap; line-height: 1.7;">${k.knowledge_content}</p>
+        </div>
+      `).join('');
+      
+      if (isAdmin) {
+        container.innerHTML += `
+          <button onclick="addKnowledge()" style="width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #8B9E88, #6B7A66); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: 600;">新增飾品小知識</button>
+        `;
+      }
+    }
+
+    function renderFAQ() {
+      const warnings = data.filter(r => r.faq_id && r.faq_type === 'warning');
+      const cautions = data.filter(r => r.faq_id && r.faq_type === 'caution');
+      const faqs = data.filter(r => r.faq_id && r.faq_type === 'faq');
+      
+      document.getElementById('warningList').innerHTML = `
+        <h3 style="font-size: 1.1rem; color: #854D0E; margin-bottom: 0.9rem;">⚠️ 提醒</h3>
+        ${warnings.map(w => `
+          <div style="background: rgba(255, 251, 230, 0.8); border: 2px solid rgba(234, 179, 8, 0.5); border-radius: 10px; padding: 1rem; margin-bottom: 0.7rem; position: relative;">
+            ${isAdmin ? `
+              <div style="position: absolute; top: 0.7rem; right: 0.7rem; display: flex; gap: 0.3rem;">
+                <button onclick="editFAQ('${w.__backendId}')" style="background: #8B9E88; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">編輯</button>
+                <button onclick="confirmDelete('faq', '${w.__backendId}', '提醒')" style="background: #DC2626; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">刪除</button>
+              </div>
+            ` : ''}
+            ${w.faq_title ? `<h5 style="font-size: 0.85rem; color: #854D0E; margin-bottom: 0.4rem; font-weight: 600;">${w.faq_title}</h5>` : ''}
+            <p style="font-size: 0.8rem; color: #854D0E; white-space: pre-wrap;">${w.faq_content}</p>
+          </div>
+        `).join('')}
+        ${isAdmin ? '<button onclick="addFAQ(\'warning\')" style="width: 100%; padding: 0.7rem; background: #EAB308; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.85rem; margin-top: 0.4rem;">新增提醒</button>' : ''}
+      `;
+      
+      document.getElementById('cautionList').innerHTML = `
+        <h3 style="font-size: 1.1rem; color: #DC2626; margin-bottom: 0.9rem;">❗️ 注意事項</h3>
+        ${cautions.map(c => `
+          <div style="background: rgba(254, 226, 226, 0.8); border: 2px solid rgba(220, 38, 38, 0.5); border-radius: 10px; padding: 1rem; margin-bottom: 0.7rem; position: relative;">
+            ${isAdmin ? `
+              <div style="position: absolute; top: 0.7rem; right: 0.7rem; display: flex; gap: 0.3rem;">
+                <button onclick="editFAQ('${c.__backendId}')" style="background: #8B9E88; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">編輯</button>
+                <button onclick="confirmDelete('faq', '${c.__backendId}', '注意事項')" style="background: #DC2626; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">刪除</button>
+              </div>
+            ` : ''}
+            ${c.faq_title ? `<h5 style="font-size: 0.85rem; color: #DC2626; margin-bottom: 0.4rem; font-weight: 600;">${c.faq_title}</h5>` : ''}
+            <p style="font-size: 0.8rem; color: #DC2626; white-space: pre-wrap;">${c.faq_content}</p>
+          </div>
+        `).join('')}
+        ${isAdmin ? '<button onclick="addFAQ(\'caution\')" style="width: 100%; padding: 0.7rem; background: #DC2626; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.85rem; margin-top: 0.4rem;">新增注意事項</button>' : ''}
+      `;
+      
+      document.getElementById('faqList').innerHTML = faqs.map(f => `
+        <div style="background: rgba(255,255,255,0.9); border-radius: 10px; padding: 1rem; margin-bottom: 0.7rem; border: 2px solid rgba(168,188,165,0.3); position: relative;">
+          ${isAdmin ? `
+            <div style="position: absolute; top: 0.7rem; right: 0.7rem; display: flex; gap: 0.3rem;">
+              <button onclick="editFAQ('${f.__backendId}')" style="background: #8B9E88; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">編輯</button>
+              <button onclick="confirmDelete('faq', '${f.__backendId}', '常見問題')" style="background: #DC2626; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">刪除</button>
+            </div>
+          ` : ''}
+          <h5 style="font-size: 0.85rem; color: #3D4A39; margin-bottom: 0.4rem; font-weight: 600;">${f.faq_title}</h5>
+          <p style="font-size: 0.8rem; color: #5A6855; white-space: pre-wrap;">${f.faq_content}</p>
+        </div>
+      `).join('') + (isAdmin ? '<button onclick="addFAQ(\'faq\')" style="width: 100%; padding: 0.7rem; background: linear-gradient(135deg, #8B9E88, #6B7A66); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.85rem; margin-top: 0.4rem;">新增常見問題</button>' : '');
+    }
+
+    function openAdminLogin() {
+      const modal = document.getElementById('adminModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('adminModal')">×</button>
+          <h3 style="font-size: 1.3rem; color: #3D4A39; margin-bottom: 1.5rem; text-align: center;">🛡️ 管理員登入</h3>
+          
+          <div style="margin-bottom: 0.9rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">帳號</label>
+            <input type="text" id="adminUser" class="input-field">
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.4rem; color: #3D4A39; font-weight: 600; font-size: 0.9rem;">密碼</label>
+            <input type="password" id="adminPass" class="input-field">
+          </div>
+          
+          <button class="btn-primary" onclick="adminLogin()">登入</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function adminLogin() {
+      const username = document.getElementById('adminUser').value;
+      const password = document.getElementById('adminPass').value;
+      
+      if (username === 'tenyears_oneday' && password === '09110321') {
+        isAdmin = true;
+        closeModal('adminModal');
+        showToast('管理員登入成功');
+        document.getElementById('adminFab').style.display = 'flex';
+        renderProducts();
+        renderAnnouncements();
+        renderPromos();
+        renderKnowledge();
+        renderFAQ();
+      } else {
+        showToast('帳號或密碼錯誤');
+      }
+    }
+
+    function openAdminPanel() {
+      if (!isAdmin) return;
+      
+      const products = data.filter(r => r.product_id && r.product_status !== 'deleted');
+      const orders = data.filter(r => r.order_id).sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
+      const users = data.filter(r => r.user_phone && r.user_phone.length === 10);
+      
+      const modal = document.getElementById('adminModal');
+      modal.innerHTML = `
+        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #F8F9F7; overflow-y: auto; z-index: 1001;">
+          <header style="background: linear-gradient(135deg, #2D3C2D, #3D4A39); color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100;">
+            <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.9rem;">
+              <h2 style="font-size: 1.3rem;">🛡️ 管理後台</h2>
+              <div style="display: flex; gap: 0.7rem;">
+                <button onclick="addAnnouncement()" style="padding: 0.5rem 1rem; background: #EAB308; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">新增公告</button>
+                <button onclick="logout()" style="padding: 0.5rem 1rem; background: white; color: #3D4A39; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">登出</button>
+                <button onclick="closeModal('adminModal')" style="padding: 0.5rem 1rem; background: white; color: #3D4A39; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">關閉後台</button>
+              </div>
+            </div>
+          </header>
+          
+          <main style="max-width: 1100px; margin: 0 auto; padding: 1.5rem;">
+            <section style="background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                <h3 style="font-size: 1.2rem; color: #3D4A39;">商品管理</h3>
+              </div>
+              <div style="display: grid; gap: 0.9rem; max-height: 450px; overflow-y: auto;">
+                ${products.length === 0 ? '<p style="color: #6B7A66; text-align: center; padding: 2rem;">尚無商品</p>' : products.map(p => {
+                  const images = p.product_images ? p.product_images.split(',') : [];
+                  const firstImage = images[0] || '';
+                  return `
+                    <div style="background: #F8F9F7; padding: 0.9rem; border-radius: 10px; display: flex; gap: 0.9rem; align-items: center;">
+                      <div style="width: 70px; height: 70px; flex-shrink: 0; background: white; border-radius: 8px; overflow: hidden;">
+                        ${firstImage ? `<img src="${firstImage}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.style.display='none'">` : '<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.8rem;">📷</div>'}
+                      </div>
+                      <div style="flex: 1;">
+                        <h4 style="font-size: 0.95rem; color: #3D4A39; margin-bottom: 0.2rem;">${p.product_name}</h4>
+                        <p style="color: #8B9E88; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.2rem;">NT$ ${p.product_price}</p>
+                        <p style="font-size: 0.75rem; color: #6B7A66;">分類: ${p.product_category === 'all' ? '全系列' : '純銀飾品'} / ${p.product_subcategory === 'necklace' ? '項鍊' : p.product_subcategory === 'bracelet' ? '手鏈' : p.product_subcategory === 'earring' ? '耳環' : p.product_subcategory === 'ring' ? '戒指' : '全部'}</p>
+                        <p style="font-size: 0.75rem; color: ${p.product_status === 'sold_out' ? '#DC2626' : '#10B981'};">狀態: ${p.product_status === 'sold_out' ? '已售完' : '販售中'}</p>
+                      </div>
+                      <div style="display: flex; gap: 0.4rem;">
+                        <button onclick="editProduct('${p.__backendId}')" style="padding: 0.4rem 0.9rem; background: #8B9E88; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">編輯</button>
+                        <button onclick="confirmDelete('product', '${p.__backendId}', '${p.product_name}')" style="padding: 0.4rem 0.9rem; background: #DC2626; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">刪除</button>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+            
+            <section style="background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+              <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.2rem;">訂單管理 (${orders.length} 筆)</h3>
+              <div style="display: grid; gap: 0.9rem; max-height: 450px; overflow-y: auto;">
+                ${orders.length === 0 ? '<p style="color: #6B7A66; text-align: center; padding: 2rem;">尚無訂單</p>' : orders.map(o => {
+                  const date = new Date(o.order_date);
+                  const items = JSON.parse(o.order_items);
+                  const userInfo = data.find(u => u.user_phone === o.order_user);
+                  return `
+                    <div style="background: #F8F9F7; padding: 1rem; border-radius: 10px; position: relative;">
+                      <button onclick="confirmDelete('order', '${o.__backendId}', '訂單${o.order_id}')" style="position: absolute; top: 0.9rem; right: 0.9rem; padding: 0.35rem 0.7rem; background: #DC2626; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.75rem;">刪除</button>
+                      <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; padding-right: 3.5rem;">
+                        <p style="font-size: 0.8rem; color: #6B7A66;">訂單編號: ${o.order_id}</p>
+                        <p style="font-size: 0.8rem; color: #6B7A66;">${date.toLocaleDateString('zh-TW')} ${date.toLocaleTimeString('zh-TW')}</p>
+                      </div>
+                      ${userInfo ? `<p style="font-size: 0.8rem; color: #5A6855; margin-bottom: 0.3rem;">顧客: ${userInfo.user_name} (${userInfo.user_phone})</p>` : ''}
+                      <div style="margin: 0.4rem 0; font-size: 0.8rem; color: #5A6855;">
+                        ${items.map(item => `<p>• ${item.name} ${item.style ? '(' + item.style + ')' : ''} × ${item.quantity}</p>`).join('')}
+                      </div>
+                      <p style="font-size: 0.8rem; color: #6B7A66; margin-bottom: 0.4rem;">配送: ${o.order_shipping}</p>
+                      <p style="font-size: 0.95rem; color: #3D4A39; font-weight: 700;">總額: NT$ ${o.order_total}</p>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+            
+            <section style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+              <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.2rem;">會員管理 (${users.length} 人)</h3>
+              <div style="display: grid; gap: 0.9rem; max-height: 450px; overflow-y: auto;">
+                ${users.length === 0 ? '<p style="color: #6B7A66; text-align: center; padding: 2rem;">尚無會員</p>' : users.map(u => {
+                  const currentMonth = new Date().getMonth() + 1;
+                  const isBirthday = u.user_birth_month === currentMonth;
+                  const userOrders = data.filter(o => o.order_id && o.order_user === u.user_phone);
+                  return `
+                    <div style="background: #F8F9F7; padding: 1rem; border-radius: 10px;">
+                      <h4 style="font-size: 0.95rem; color: #3D4A39; margin-bottom: 0.3rem;">${u.user_name} ${isBirthday ? '🎂' : ''}</h4>
+                      <p style="color: #6B7A66; font-size: 0.8rem; margin-bottom: 0.2rem;">電話: ${u.user_phone}</p>
+                      ${u.user_address ? `<p style="color: #6B7A66; font-size: 0.8rem; margin-bottom: 0.2rem;">地址: ${u.user_address}</p>` : ''}
+                      ${u.user_birth_month && u.user_birth_day ? `<p style="color: #6B7A66; font-size: 0.8rem; margin-bottom: 0.2rem;">生日: ${u.user_birth_month}月${u.user_birth_day}日</p>` : ''}
+                      <p style="color: #8B9E88; font-size: 0.8rem; font-weight: 600;">訂單數量: ${userOrders.length} 筆</p>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+          </main>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function addProduct(category) {
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box" style="max-width: 600px;">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">新增商品</h3>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">商品名稱</label>
+            <input type="text" id="productName" class="input-field">
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">價格</label>
+            <input type="number" id="productPrice" class="input-field">
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">分類</label>
+            <select id="productCategory" class="input-field">
+              <option value="all" ${category === 'all' ? 'selected' : ''}>全系列</option>
+              <option value="silver" ${category === 'silver' ? 'selected' : ''}>純銀飾品</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">子分類</label>
+            <select id="productSubcategory" class="input-field">
+              <option value="necklace">項鍊</option>
+              <option value="bracelet">手鏈</option>
+              <option value="earring">耳環</option>
+              <option value="ring">戒指</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">狀態</label>
+            <select id="productStatus" class="input-field">
+              <option value="available">販售中</option>
+              <option value="sold_out">已售完</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">圖片網址（每行一個）</label>
+            <textarea id="productImages" class="input-field" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">款式（每行一個選項）</label>
+            <textarea id="productStyles" class="input-field" rows="3" placeholder="金色&#10;銀色&#10;玫瑰金"></textarea>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">編碼（僅管理員可見）</label>
+            <input type="text" id="productCode" class="input-field">
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">廠商（僅管理員可見）</label>
+            <input type="text" id="productSupplier" class="input-field">
+          </div>
+          
+          <button class="btn-primary" onclick="saveProduct()" id="saveBtn">新增商品</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    async function saveProduct(editId = null) {
+      const name = document.getElementById('productName').value.trim();
+      const price = parseFloat(document.getElementById('productPrice').value);
+      const category = document.getElementById('productCategory').value;
+      const subcategory = document.getElementById('productSubcategory').value;
+      const status = document.getElementById('productStatus').value;
+      const images = document.getElementById('productImages').value.trim().split('\n').filter(s => s.trim()).join(',');
+      const styles = document.getElementById('productStyles').value.trim();
+      const code = document.getElementById('productCode').value.trim();
+      const supplier = document.getElementById('productSupplier').value.trim();
+      
+      if (!name || !price || !category || !subcategory) {
+        showToast('請填寫必填欄位');
+        return;
+      }
+      
+      const btn = document.getElementById('saveBtn');
+      btn.disabled = true;
+      btn.textContent = '處理中...';
+      
+      if (editId) {
+        const existing = data.find(r => r.__backendId === editId);
+        if (existing) {
+          const updated = {
+            ...existing,
+            product_name: name,
+            product_price: price,
+            product_category: category,
+            product_subcategory: subcategory,
+            product_status: status,
+            product_images: images,
+            product_styles: styles,
+            product_code: code,
+            product_supplier: supplier
+          };
+          const result = await window.dataSdk.update(updated);
+          if (result.isOk) {
+            showToast('商品已更新');
+            closeModal('productModal');
+          } else {
+            showToast('更新失敗');
+            btn.disabled = false;
+            btn.textContent = '更新商品';
+          }
+        }
+      } else {
+        if (data.filter(r => r.product_id).length >= 999) {
+          showToast('商品數量已達上限');
+          btn.disabled = false;
+          btn.textContent = '新增商品';
+          return;
+        }
+        
+        const result = await window.dataSdk.create({
+          product_id: 'P' + Date.now() + Math.random(),
+          product_name: name,
+          product_price: price,
+          product_category: category,
+          product_subcategory: subcategory,
+          product_status: status,
+          product_images: images,
+          product_styles: styles,
+          product_code: code,
+          product_supplier: supplier
+        });
+        
+        if (result.isOk) {
+          showToast('商品已新增');
+          closeModal('productModal');
+        } else {
+          showToast('新增失敗');
+          btn.disabled = false;
+          btn.textContent = '新增商品';
+        }
+      }
+    }
+
+    function editProduct(id) {
+      const p = data.find(r => r.__backendId === id);
+      if (!p) return;
+      
+      closeModal('productModal');
+      
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box" style="max-width: 600px;">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">編輯商品</h3>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">商品名稱</label>
+            <input type="text" id="productName" class="input-field" value="${p.product_name}">
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">價格</label>
+            <input type="number" id="productPrice" class="input-field" value="${p.product_price}">
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">分類</label>
+            <select id="productCategory" class="input-field">
+              <option value="all" ${p.product_category === 'all' ? 'selected' : ''}>全系列</option>
+              <option value="silver" ${p.product_category === 'silver' ? 'selected' : ''}>純銀飾品</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">子分類</label>
+            <select id="productSubcategory" class="input-field">
+              <option value="necklace" ${p.product_subcategory === 'necklace' ? 'selected' : ''}>項鍊</option>
+              <option value="bracelet" ${p.product_subcategory === 'bracelet' ? 'selected' : ''}>手鏈</option>
+              <option value="earring" ${p.product_subcategory === 'earring' ? 'selected' : ''}>耳環</option>
+              <option value="ring" ${p.product_subcategory === 'ring' ? 'selected' : ''}>戒指</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">狀態</label>
+            <select id="productStatus" class="input-field">
+              <option value="available" ${p.product_status === 'available' ? 'selected' : ''}>販售中</option>
+              <option value="sold_out" ${p.product_status === 'sold_out' ? 'selected' : ''}>已售完</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">圖片網址（每行一個）</label>
+            <textarea id="productImages" class="input-field" rows="3">${p.product_images ? p.product_images.split(',').join('\n') : ''}</textarea>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">款式（每行一個選項）</label>
+            <textarea id="productStyles" class="input-field" rows="3">${p.product_styles || ''}</textarea>
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">編碼（僅管理員可見）</label>
+            <input type="text" id="productCode" class="input-field" value="${p.product_code || ''}">
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">廠商（僅管理員可見）</label>
+            <input type="text" id="productSupplier" class="input-field" value="${p.product_supplier || ''}">
+          </div>
+          
+          <button class="btn-primary" onclick="saveProduct('${id}')" id="saveBtn">更新商品</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function addAnnouncement() {
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">新增公告</h3>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">公告內容</label>
+            <textarea id="announcementContent" class="input-field" rows="4" placeholder="輸入公告內容..."></textarea>
+          </div>
+          
+          <button class="btn-primary" onclick="saveAnnouncement()" id="saveAnnouncementBtn">發布公告</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    async function saveAnnouncement() {
+      const content = document.getElementById('announcementContent').value.trim();
+      
+      if (!content) {
+        showToast('請輸入公告內容');
+        return;
+      }
+      
+      if (data.filter(r => r.announcement_id).length >= 999) {
+        showToast('公告數量已達上限');
+        return;
+      }
+      
+      const btn = document.getElementById('saveAnnouncementBtn');
+      btn.disabled = true;
+      btn.textContent = '處理中...';
+      
+      const result = await window.dataSdk.create({
+        announcement_id: 'ANN' + Date.now(),
+        announcement_content: content,
+        announcement_date: new Date().toISOString()
+      });
+      
+      if (result.isOk) {
+        showToast('公告已發布');
+        closeModal('productModal');
+      } else {
+        showToast('發布失敗');
+        btn.disabled = false;
+        btn.textContent = '發布公告';
+      }
+    }
+
+    function addPromo() {
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">新增優惠活動</h3>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">標題</label>
+            <input type="text" id="promoTitle" class="input-field" placeholder="活動標題">
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">內容</label>
+            <textarea id="promoContent" class="input-field" rows="4" placeholder="活動內容說明..."></textarea>
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">顏色</label>
+            <select id="promoColor" class="input-field">
+              <option value="yellow">淺黃色</option>
+              <option value="blue">淺藍色</option>
+              <option value="pink">淺粉色</option>
+              <option value="purple">淺紫色</option>
+            </select>
+          </div>
+          
+          <button class="btn-primary" onclick="savePromo()" id="savePromoBtn">新增活動</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    async function savePromo(editId = null) {
+      const title = document.getElementById('promoTitle').value.trim();
+      const content = document.getElementById('promoContent').value.trim();
+      const color = document.getElementById('promoColor').value;
+      
+      if (!title || !content) {
+        showToast('請填寫標題和內容');
+        return;
+      }
+      
+      const btn = document.getElementById('savePromoBtn');
+      btn.disabled = true;
+      btn.textContent = '處理中...';
+      
+      if (editId) {
+        const existing = data.find(r => r.__backendId === editId);
+        if (existing) {
+          const updated = {...existing, promo_title: title, promo_content: content, promo_color: color};
+          const result = await window.dataSdk.update(updated);
+          if (result.isOk) {
+            showToast('活動已更新');
+            closeModal('productModal');
+          } else {
+            showToast('更新失敗');
+            btn.disabled = false;
+            btn.textContent = '更新活動';
+          }
+        }
+      } else {
+        if (data.filter(r => r.promo_id).length >= 999) {
+          showToast('活動數量已達上限');
+          btn.disabled = false;
+          btn.textContent = '新增活動';
+          return;
+        }
+        
+        const result = await window.dataSdk.create({
+          promo_id: 'PROMO' + Date.now(),
+          promo_title: title,
+          promo_content: content,
+          promo_color: color
+        });
+        
+        if (result.isOk) {
+          showToast('活動已新增');
+          closeModal('productModal');
+        } else {
+          showToast('新增失敗');
+          btn.disabled = false;
+          btn.textContent = '新增活動';
+        }
+      }
+    }
+
+    function editPromo(id) {
+      const p = data.find(r => r.__backendId === id);
+      if (!p) return;
+      
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">編輯優惠活動</h3>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">標題</label>
+            <input type="text" id="promoTitle" class="input-field" value="${p.promo_title}">
+          </div>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">內容</label>
+            <textarea id="promoContent" class="input-field" rows="4">${p.promo_content}</textarea>
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">顏色</label>
+            <select id="promoColor" class="input-field">
+              <option value="yellow" ${p.promo_color === 'yellow' ? 'selected' : ''}>淺黃色</option>
+              <option value="blue" ${p.promo_color === 'blue' ? 'selected' : ''}>淺藍色</option>
+              <option value="pink" ${p.promo_color === 'pink' ? 'selected' : ''}>淺粉色</option>
+              <option value="purple" ${p.promo_color === 'purple' ? 'selected' : ''}>淺紫色</option>
+            </select>
+          </div>
+          
+          <button class="btn-primary" onclick="savePromo('${id}')" id="savePromoBtn">更新活動</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function addKnowledge() {
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">新增飾品小知識</h3>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">標題</label>
+            <input type="text" id="knowledgeTitle" class="input-field" placeholder="知識標題">
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">內容</label>
+            <textarea id="knowledgeContent" class="input-field" rows="5" placeholder="知識內容說明..."></textarea>
+          </div>
+          
+          <button class="btn-primary" onclick="saveKnowledge()" id="saveKnowledgeBtn">新增知識</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    async function saveKnowledge(editId = null) {
+      const title = document.getElementById('knowledgeTitle').value.trim();
+      const content = document.getElementById('knowledgeContent').value.trim();
+      
+      if (!title || !content) {
+        showToast('請填寫標題和內容');
+        return;
+      }
+      
+      const btn = document.getElementById('saveKnowledgeBtn');
+      btn.disabled = true;
+      btn.textContent = '處理中...';
+      
+      if (editId) {
+        const existing = data.find(r => r.__backendId === editId);
+        if (existing) {
+          const updated = {...existing, knowledge_title: title, knowledge_content: content};
+          const result = await window.dataSdk.update(updated);
+          if (result.isOk) {
+            showToast('知識已更新');
+            closeModal('productModal');
+          } else {
+            showToast('更新失敗');
+            btn.disabled = false;
+            btn.textContent = '更新知識';
+          }
+        }
+      } else {
+        if (data.filter(r => r.knowledge_id).length >= 999) {
+          showToast('知識數量已達上限');
+          btn.disabled = false;
+          btn.textContent = '新增知識';
+          return;
+        }
+        
+        const result = await window.dataSdk.create({
+          knowledge_id: 'KNOW' + Date.now(),
+          knowledge_title: title,
+          knowledge_content: content
+        });
+        
+        if (result.isOk) {
+          showToast('知識已新增');
+          closeModal('productModal');
+        } else {
+          showToast('新增失敗');
+          btn.disabled = false;
+          btn.textContent = '新增知識';
+        }
+      }
+    }
+
+    function editKnowledge(id) {
+      const k = data.find(r => r.__backendId === id);
+      if (!k) return;
+      
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">編輯飾品小知識</h3>
+          
+          <div style="margin-bottom: 0.8rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">標題</label>
+            <input type="text" id="knowledgeTitle" class="input-field" value="${k.knowledge_title}">
+          </div>
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">內容</label>
+            <textarea id="knowledgeContent" class="input-field" rows="5">${k.knowledge_content}</textarea>
+          </div>
+          
+          <button class="btn-primary" onclick="saveKnowledge('${id}')" id="saveKnowledgeBtn">更新知識</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function addFAQ(type) {
+      const typeNames = {warning: '提醒', caution: '注意事項', faq: '常見問題'};
+      
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">新增${typeNames[type]}</h3>
+          
+          ${type === 'faq' || type === 'warning' ? `
+            <div style="margin-bottom: 0.8rem;">
+              <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">標題${type === 'warning' ? '（選填）' : ''}</label>
+              <input type="text" id="faqTitle" class="input-field" placeholder="${type === 'faq' ? '問題標題' : '提醒標題'}">
+            </div>
+          ` : ''}
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">內容</label>
+            <textarea id="faqContent" class="input-field" rows="4" placeholder="內容說明..."></textarea>
+          </div>
+          
+          <button class="btn-primary" onclick="saveFAQ('${type}')" id="saveFAQBtn">新增${typeNames[type]}</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    async function saveFAQ(type, editId = null) {
+      const titleInput = document.getElementById('faqTitle');
+      const title = titleInput ? titleInput.value.trim() : '';
+      const content = document.getElementById('faqContent').value.trim();
+      
+      if (!content) {
+        showToast('請填寫內容');
+        return;
+      }
+      
+      if (type === 'faq' && !title) {
+        showToast('請填寫標題');
+        return;
+      }
+      
+      const btn = document.getElementById('saveFAQBtn');
+      btn.disabled = true;
+      btn.textContent = '處理中...';
+      
+      if (editId) {
+        const existing = data.find(r => r.__backendId === editId);
+        if (existing) {
+          const updated = {...existing, faq_title: title, faq_content: content};
+          const result = await window.dataSdk.update(updated);
+          if (result.isOk) {
+            showToast('已更新');
+            closeModal('productModal');
+          } else {
+            showToast('更新失敗');
+            btn.disabled = false;
+            btn.textContent = '更新';
+          }
+        }
+      } else {
+        if (data.filter(r => r.faq_id).length >= 999) {
+          showToast('FAQ數量已達上限');
+          btn.disabled = false;
+          btn.textContent = '新增';
+          return;
+        }
+        
+        const result = await window.dataSdk.create({
+          faq_id: 'FAQ' + Date.now(),
+          faq_type: type,
+          faq_title: title,
+          faq_content: content
+        });
+        
+        if (result.isOk) {
+          showToast('已新增');
+          closeModal('productModal');
+        } else {
+          showToast('新增失敗');
+          btn.disabled = false;
+          btn.textContent = '新增';
+        }
+      }
+    }
+
+    function editFAQ(id) {
+      const f = data.find(r => r.__backendId === id);
+      if (!f) return;
+      
+      const typeNames = {warning: '提醒', caution: '注意事項', faq: '常見問題'};
+      
+      const modal = document.getElementById('productModal');
+      modal.innerHTML = `
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal('productModal')">×</button>
+          <h3 style="font-size: 1.2rem; color: #3D4A39; margin-bottom: 1.3rem; text-align: center;">編輯${typeNames[f.faq_type]}</h3>
+          
+          ${f.faq_type === 'faq' || f.faq_type === 'warning' ? `
+            <div style="margin-bottom: 0.8rem;">
+              <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">標題${f.faq_type === 'warning' ? '（選填）' : ''}</label>
+              <input type="text" id="faqTitle" class="input-field" value="${f.faq_title || ''}">
+            </div>
+          ` : ''}
+          
+          <div style="margin-bottom: 1.2rem;">
+            <label style="display: block; margin-bottom: 0.3rem; color: #3D4A39; font-weight: 600; font-size: 0.85rem;">內容</label>
+            <textarea id="faqContent" class="input-field" rows="4">${f.faq_content}</textarea>
+          </div>
+          
+          <button class="btn-primary" onclick="saveFAQ('${f.faq_type}', '${id}')" id="saveFAQBtn">更新${typeNames[f.faq_type]}</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+
+    function confirmDelete(type, id, name) {
+      const overlay = document.getElementById('confirmOverlay');
+      document.getElementById('confirmTitle').textContent = '確認刪除';
+      document.getElementById('confirmMessage').textContent = `確定要刪除「${name}」嗎？`;
+      
+      document.getElementById('confirmBtn').onclick = async () => {
+        closeConfirm();
+        await executeDelete(type, id);
+      };
+      
+      overlay.classList.add('show');
+    }
+
+    async function executeDelete(type, id) {
+      const item = data.find(r => r.__backendId === id);
+      if (!item) return;
+      
+      if (type === 'product') {
+        const updated = {...item, product_status: 'deleted'};
+        const result = await window.dataSdk.update(updated);
+        if (result.isOk) {
+          showToast('商品已刪除');
+          closeModal('productModal');
+        } else {
+          showToast('操作失敗');
+        }
+      } else if (type === 'cart') {
+        const result = await window.dataSdk.delete(item);
+        if (result.isOk) {
+          showToast('已從購物車移除');
+          openCart();
+        } else {
+          showToast('操作失敗');
+        }
+      } else {
+        const result = await window.dataSdk.delete(item);
+        if (result.isOk) {
+          showToast('已刪除');
+          closeModal('productModal');
+        } else {
+          showToast('操作失敗');
+        }
+      }
+    }
+
+    function closeConfirm() {
+      document.getElementById('confirmOverlay').classList.remove('show');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('show');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b6c0665d2e3a9a7',t:'MTc2NzIwNzY4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
