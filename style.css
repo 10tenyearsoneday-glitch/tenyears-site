@@ -1,0 +1,141 @@
+body{
+  margin:0;
+  font-family:'Noto Serif TC', serif;
+  background:linear-gradient(180deg,#F8F9F7,#D4E7D1,#A8BCA5,#B8C9A8);
+  color:#4a5a4f;
+}
+
+.topbar{
+  position:sticky;
+  top:0;
+  background:rgba(248,249,247,0.85);
+  backdrop-filter:blur(6px);
+  padding:16px 24px 10px;
+  z-index:10;
+}
+
+.brand h1{
+  font-size:28px;
+  margin:0;
+  font-weight:400;
+}
+
+.dashed{
+  width:120px;
+  height:6px;
+  margin:6px 0 4px;
+  background:repeating-linear-gradient(
+    90deg,
+    rgba(120,140,120,.35),
+    rgba(120,140,120,.35) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  border-radius:4px;
+}
+
+.brand-sub{
+  font-style:italic;
+  font-size:14px;
+  opacity:.6;
+}
+
+.nav{
+  display:flex;
+  gap:12px;
+  margin-top:12px;
+  overflow-x:auto;
+}
+
+.nav a{
+  font-size:13px;
+  padding:6px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.5);
+  white-space:nowrap;
+}
+
+.nav a.active{
+  background:#4f5f54;
+  color:#fff;
+}
+
+.icons{
+  position:absolute;
+  right:20px;
+  top:20px;
+  display:flex;
+  gap:10px;
+  font-size:13px;
+}
+
+.hero{
+  padding:80px 20px 40px;
+  text-align:center;
+}
+
+.hero h2{
+  font-size:36px;
+  margin-bottom:12px;
+}
+
+.hero-sub{
+  font-size:18px;
+  opacity:.8;
+}
+
+.intro-full{
+  padding:60px 20px;
+}
+
+.intro-card{
+  max-width:900px;
+  margin:auto;
+  background:rgba(255,255,255,.75);
+  border-radius:28px;
+  padding:60px 40px;
+  text-align:center;
+}
+
+.intro-card h3{
+  font-size:28px;
+  margin-bottom:12px;
+}
+
+.en{
+  letter-spacing:.12em;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.italic{
+  font-style:italic;
+  opacity:.7;
+  margin-bottom:24px;
+}
+
+.thanks{
+  margin-top:24px;
+}
+
+.footer{
+  margin-top:80px;
+  padding:40px 20px 60px;
+  background:#4f5f54;
+  color:#f5f7f4;
+}
+
+.footer-items{
+  display:flex;
+  justify-content:space-around;
+  flex-wrap:wrap;
+  gap:20px;
+  margin-bottom:24px;
+  font-size:14px;
+}
+
+.footer-brand{
+  text-align:center;
+  font-size:13px;
+  opacity:.8;
+}
