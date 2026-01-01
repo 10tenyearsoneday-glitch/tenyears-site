@@ -205,3 +205,34 @@ body{
   .hero-title{font-size:30px;}
   .glass-card{padding:26px 18px;}
 }
+/* ===== Canva 風 icon ===== */
+.icons {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.icons a {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #cfd8cf;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s ease;
+}
+
+.icons img {
+  width: 18px;
+  height: 18px;
+  opacity: .6;
+}
+
+.icons a:hover {
+  border-color: #9fb3a0;
+}
+
+.icons a:hover img {
+  opacity: .9;
+}
