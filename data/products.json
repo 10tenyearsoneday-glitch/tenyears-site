@@ -1,0 +1,61 @@
+[
+  {
+    "id": "p001",
+    "name": "晨光細鍊項鍊",
+    "status": "現貨",
+    "collection": "全系列",
+    "category": "項鍊",
+    "isSilver": true,
+    "price": 980,
+    "variants": [
+      "40cm",
+      "45cm",
+      "50cm"
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=1200&q=70"
+    ],
+    "desc": "細緻鍊身與溫柔光澤，日常也能很有故事。",
+    "sku": "TYOD-NEC-001",
+    "vendor": "TENYEARS"
+  },
+  {
+    "id": "p002",
+    "name": "月影耳環",
+    "status": "預購",
+    "collection": "全系列",
+    "category": "耳環",
+    "isSilver": true,
+    "price": 620,
+    "variants": [
+      "一對"
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=1200&q=70"
+    ],
+    "desc": "輕盈、俐落，像月光落在耳畔。",
+    "sku": "TYOD-EAR-002",
+    "vendor": "TENYEARS"
+  },
+  {
+    "id": "p003",
+    "name": "微光戒指",
+    "status": "現貨",
+    "collection": "全系列",
+    "category": "戒指",
+    "isSilver": false,
+    "price": 520,
+    "variants": [
+      "#10",
+      "#12",
+      "#14",
+      "#16"
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=1200&q=70"
+    ],
+    "desc": "把溫柔戴在指尖，光會慢慢亮起來。",
+    "sku": "TYOD-RNG-003",
+    "vendor": "TENYEARS"
+  }
+]
