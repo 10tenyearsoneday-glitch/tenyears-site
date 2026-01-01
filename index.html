@@ -1,68 +1,106 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <title>十年一日 TEN YEARS ONE DAY</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>十年一日 TEN YEARS ONE DAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+body{
+  margin:0;
+  font-family:"Noto Serif TC", serif;
+  background:linear-gradient(#B8C9A8,#A8BCA5,#D4E7D1,#F8F9F7);
+  color:#4a5a50;
+}
+header{
+  padding:24px 40px;
+}
+.brand{
+  font-size:28px;
+}
+.brand-underline{
+  width:120px;
+  height:6px;
+  background:repeating-linear-gradient(
+    90deg,
+    rgba(74,90,80,.35) 0 8px,
+    transparent 8px 14px
+  );
+  margin-top:6px;
+}
+.brand-sub{
+  font-style:italic;
+  opacity:.6;
+}
+.hero{
+  text-align:center;
+  padding:40px 20px 20px;
+}
+.hero h2{
+  font-size:22px;
+  margin:0;
+}
+.hero p{
+  margin:8px 0 0;
+  font-size:14px;
+  opacity:.7;
+}
+.announcement{
+  max-width:820px;
+  margin:20px auto;
+  padding:12px 18px;
+  background:rgba(255,235,160,.45);
+  border-radius:14px;
+  font-size:13px;
+}
+.intro{
+  max-width:100%;
+  text-align:center;
+  padding:50px 20px;
+}
+.intro h3{
+  font-size:20px;
+}
+footer{
+  margin-top:60px;
+  background:#3f5146;
+  color:#fff;
+  padding:40px 20px;
+  text-align:center;
+}
+</style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand">
-    <h1>十年一日</h1>
-    <div class="dashed"></div>
-    <div class="brand-sub">tenyears_oneday</div>
-  </div>
-
-  <nav class="nav">
-    <a class="active">關於我們</a>
-    <a>全系列🌸</a>
-    <a>純銀飾品✨</a>
-    <a>優惠活動🎁</a>
-    <a>飾品小知識💡</a>
-    <a>相關問題❗</a>
-  </nav>
-
-  <div class="icons">
-    <a href="https://www.instagram.com/tenyears_oneday" target="_blank">IG</a>
-    <a href="https://line.me/R/ti/p/@396kwrga" target="_blank">LINE</a>
-    <span>🔍</span>
-    <span>🛒</span>
-    <span>👤</span>
-  </div>
+<header>
+  <div class="brand">十年一日</div>
+  <div class="brand-underline"></div>
+  <div class="brand-sub">tenyears_oneday</div>
 </header>
-<div class="card notice-box">
-  <!-- 你的公告內容 -->
-</div>
+
 <section class="hero">
   <h2>十年一日</h2>
-  <p class="hero-sub">時光淬鍊 · 破碎中尋覓永恆</p>
+  <p>時光淬鍊 · 破碎中尋覓永恆</p>
   <p>每一件飾品，都是時間的詩篇</p>
 </section>
 
-<section class="intro-full">
-  <div class="intro-card">
-    <h3>🤍 歡迎來到 十年一日</h3>
-    <div class="en">TEN YEARS ONE DAY</div>
-    <div class="italic">Every piece tells a story.</div>
+<div class="announcement">
+📣 公告｜這裡可隨時更新最新活動與重要提醒
+</div>
 
-    <p>承載著十年以上的友情，<br>繼續延續下去的動力。</p>
-    <p>每一件飾品，<br>都是時間累積的溫柔。</p>
-
-    <p class="thanks">謝謝你，把重要的一天交給十年一日 ✨</p>
-  </div>
+<section class="intro">
+  <h3>🤍 歡迎來到 十年一日</h3>
+  <p><em>Every piece tells a story.</em></p>
+  <p>
+    承載著十年以上的友情，<br/>
+    繼續延續下去的動力。
+  </p>
 </section>
 
-<footer class="footer">
-  <div class="footer-items">
-    <div>💎 精選材質 不含鉛，安心佩戴</div>
-    <div>✨ 獨特設計 韓日歐美風格齊聚</div>
-    <div>🚚 便利配送 超商取貨、宅配到府</div>
-  </div>
-  <div class="footer-brand">tenyears_oneday · 十年一日</div>
+<footer>
+  💎 精選材質　✨ 獨特設計　🚚 便利配送<br/><br/>
+  tenyears_oneday · 十年一日
 </footer>
 
 </body>
