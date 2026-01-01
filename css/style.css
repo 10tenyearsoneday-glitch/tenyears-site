@@ -236,3 +236,10 @@ body{
 .icons a:hover img {
   opacity: .9;
 }
+/* Canva 斜體字 */
+.canva-italic {
+  font-family: "Noto Serif TC", serif;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: #6f7f73;
+}
