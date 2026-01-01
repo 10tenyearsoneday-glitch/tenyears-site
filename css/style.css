@@ -1,0 +1,207 @@
+/* TEN YEARS ONE DAY — 靜態版外觀模板
+   目標：做出接近 Canva 的乾淨、柔和、微玻璃感風格
+*/
+
+:root{
+  --bg1:#e8f0ea;
+  --bg2:#dfeae2;
+  --card:rgba(255,255,255,.72);
+  --card2:rgba(255,255,255,.62);
+  --text:#2f3b33;
+  --muted:#5a6a60;
+  --line:#e7efe9;
+  --shadow: 0 22px 60px rgba(0,0,0,.10);
+  --radius: 22px;
+  --radius-sm: 14px;
+  --max: 1040px;
+  --serif: "Noto Serif TC", ui-serif, "Times New Roman", serif;
+  --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  color:var(--text);
+  font-family:var(--serif);
+  background:
+    radial-gradient(1200px 500px at 60% 10%, rgba(255,255,255,.55), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+}
+
+/* layout */
+.container{max-width:var(--max); margin:0 auto; padding:0 20px;}
+.site-header{
+  position:sticky; top:0; z-index:20;
+  backdrop-filter: blur(10px);
+  background: rgba(232,240,234,.75);
+  border-bottom: 1px solid rgba(231,239,233,.9);
+}
+.header-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0 10px;
+  gap:14px;
+}
+.brand-title{
+  font-size:34px;
+  letter-spacing:.06em;
+  font-weight:600;
+}
+.brand-sub{
+  font-family:var(--sans);
+  font-size:13px;
+  letter-spacing:.12em;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.header-actions{
+  display:flex; align-items:center; gap:10px;
+}
+.icon-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:38px; height:38px;
+  border-radius:999px;
+  border:1px solid rgba(47,59,51,.18);
+  background: rgba(255,255,255,.55);
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  text-decoration:none;
+  color:var(--text);
+  cursor:pointer;
+}
+.icon-btn:hover{transform: translateY(-1px);}
+.icon{
+  font-family:var(--sans);
+  font-size:14px;
+}
+
+/* nav */
+.site-nav{padding:10px 0 14px;}
+.nav-inner{
+  display:flex; gap:10px; flex-wrap:wrap;
+}
+.nav-pill{
+  display:inline-flex; align-items:center;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(47,59,51,.18);
+  background: rgba(255,255,255,.55);
+  color:var(--text);
+  text-decoration:none;
+  font-size:14px;
+  white-space:nowrap;
+}
+.nav-pill.is-active{
+  background: rgba(47,59,51,.88);
+  color:white;
+  border-color: rgba(47,59,51,.88);
+}
+
+/* hero */
+.hero{
+  padding:38px 0 56px;
+}
+.hero-inner{
+  display:flex; flex-direction:column; align-items:center;
+}
+.hero-title{
+  font-size:36px; letter-spacing:.10em;
+  margin:26px 0 10px;
+  font-weight:600;
+}
+.hero-tagline{
+  text-align:center;
+  color:var(--muted);
+  line-height:1.8;
+  margin-bottom:18px;
+}
+.muted{color:var(--muted);}
+
+.glass-card{
+  width:min(860px, 100%);
+  margin-top:16px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--card), var(--card2));
+  border: 1px solid rgba(255,255,255,.65);
+  box-shadow: var(--shadow);
+  padding: 34px 30px;
+  text-align:center;
+}
+.glass-card h1{
+  margin:0 0 10px;
+  font-weight:600;
+  font-size:26px;
+}
+.en{
+  font-family:var(--sans);
+  letter-spacing:.08em;
+}
+.divider{
+  height:1px;
+  background: rgba(47,59,51,.14);
+  width: 72%;
+  margin: 18px auto;
+}
+.spacer{height:10px;}
+.strong{font-weight:600;}
+
+.cta-row{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 18px;
+  border-radius:999px;
+  background: rgba(47,59,51,.92);
+  color:white;
+  text-decoration:none;
+  border:1px solid rgba(47,59,51,.92);
+  font-family:var(--sans);
+  font-size:14px;
+  letter-spacing:.06em;
+}
+.btn:hover{transform: translateY(-1px);}
+.btn-ghost{
+  background: rgba(255,255,255,.55);
+  color: var(--text);
+  border:1px solid rgba(47,59,51,.18);
+}
+
+/* footer */
+.site-footer{
+  border-top:1px solid rgba(47,59,51,.12);
+  background: rgba(47,59,51,.88);
+  color: rgba(255,255,255,.90);
+}
+.footer-inner{
+  padding:18px 0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:center;
+}
+.footer-badges{
+  display:flex; gap:18px; flex-wrap:wrap;
+  font-family:var(--sans);
+  font-size:13px;
+  letter-spacing:.06em;
+  opacity:.95;
+}
+.copyright{
+  font-family:var(--sans);
+  font-size:12px;
+  opacity:.85;
+}
+
+/* mobile */
+@media (max-width:600px){
+  .brand-title{font-size:26px;}
+  .hero-title{font-size:30px;}
+  .glass-card{padding:26px 18px;}
+}
