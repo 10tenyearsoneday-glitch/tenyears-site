@@ -2,66 +2,562 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>十年一日 TEN YEARS ONE DAY</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- Icons (Font Awesome) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    :root{
+      --bg1:#B8C9A8; --bg2:#A8BCA5; --bg3:#D4E7D1; --bg4:#F8F9F7;
+      --ink:#334038;
+      --muted:#6f7f73;
+      --card: rgba(255,255,255,.86);
+      --card2: rgba(255,255,255,.78);
+      --pill: rgba(255,255,255,.50);
+      --pillActive: rgba(46,63,54,.90);
+      --pillText:#425349;
+      --shadow: 0 18px 40px rgba(34,55,43,.12);
+      --radius: 22px;
+      --line: rgba(80,110,92,.28);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:"Noto Serif TC", serif;
+      color:var(--ink);
+      background: linear-gradient(180deg,var(--bg1),var(--bg2),var(--bg3),var(--bg4));
+    }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 22px 18px 26px;
+    }
+
+    /* ===== Header ===== */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(248,249,247,.55);
+      border-bottom: 1px solid rgba(58,79,67,.10);
+    }
+    .headInner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 18px 12px;
+      display:flex;
+      align-items:flex-start;
+      gap: 16px;
+    }
+
+    .brand{
+      min-width: 240px;
+    }
+    .brandTitle{
+      margin:0;
+      font-weight:600;
+      letter-spacing:.06em;
+      font-size: 44px; /* smaller than before */
+      line-height:1.02;
+      position: relative;
+      display:inline-block;
+    }
+    /* irregular dashed underline */
+    .brandTitle::after{
+      content:"";
+      position:absolute;
+      left: 6px;
+      right: 6px;
+      bottom: -10px;
+      height: 10px;
+      background:
+        radial-gradient(circle at 6px 50%, rgba(46,63,54,.22) 0 3px, transparent 3.3px) 0 0/16px 10px repeat-x;
+      opacity:.75;
+      filter: blur(.15px);
+    }
+    .brandSub{
+      margin: 14px 0 0;
+      font-style: italic;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .navArea{
+      flex: 1;
+      padding-top: 12px;
+      min-width: 0;
+    }
+
+    /* pill nav (scrollable) */
+    .navPills{
+      display:flex;
+      gap: 10px;
+      overflow-x:auto;
+      padding: 10px 4px 10px;
+      margin: 0;
+      list-style:none;
+      scrollbar-width: none;
+    }
+    .navPills::-webkit-scrollbar{ display:none; }
+    .pill{
+      flex: 0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--pill);
+      border: 1px solid rgba(60,86,72,.18);
+      color: var(--pillText);
+      font-size: 14px;
+      letter-spacing:.02em;
+      text-decoration:none;
+      white-space: nowrap;
+      transition: .15s ease;
+    }
+    .pill:hover{ transform: translateY(-1px); }
+    .pill.active{
+      background: var(--pillActive);
+      border-color: rgba(0,0,0,.0);
+      color: rgba(255,255,255,.95);
+      box-shadow: 0 10px 24px rgba(25,35,30,.18);
+    }
+
+    /* icons */
+    .icons{
+      display:flex;
+      gap: 10px;
+      padding-top: 14px;
+      flex: 0 0 auto;
+    }
+    .iconBtn{
+      width: 36px;
+      height: 36px;
+      display:grid;
+      place-items:center;
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(60,86,72,.18);
+      color: rgba(47,64,55,.90);
+      cursor:pointer;
+      transition:.15s ease;
+      text-decoration:none;
+    }
+    .iconBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.70); }
+
+    /* ===== Sections ===== */
+    main{ padding-top: 18px; }
+    .section{ display:none; }
+    .section.active{ display:block; }
+
+    /* Overview block (full width) */
+    .overview{
+      margin-top: 18px;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(60,86,72,.12);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      box-shadow: var(--shadow);
+    }
+    .overview h2{
+      margin:0;
+      font-size: 26px;
+      letter-spacing:.06em;
+      font-weight:600;
+    }
+    .overview .lines{
+      margin-top: 10px;
+      font-size: 18px;  /* slightly smaller per your request */
+      color: rgba(56,72,62,.86);
+      line-height: 1.7;
+    }
+
+    /* Announcement pill */
+    .notice{
+      margin-top: 14px;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 232, 150, .30);
+      border: 1px solid rgba(214, 174, 0, .32);
+      color: rgba(78, 66, 10, .88);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .notice .tag{
+      flex: 0 0 auto;
+      font-weight:600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255, 232, 150, .45);
+      border: 1px solid rgba(214, 174, 0, .24);
+    }
+    .notice textarea{
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: vertical;
+      min-height: 38px;
+      background: transparent;
+      font: inherit;
+      color: inherit;
+    }
+
+    /* Intro card */
+    .card{
+      margin-top: 16px;
+      background: var(--card);
+      border: 1px solid rgba(60,86,72,.12);
+      border-radius: 26px;
+      padding: 26px 26px;
+      box-shadow: var(--shadow);
+      text-align:center; /* center as requested */
+    }
+    .card h3{
+      margin:0 0 10px;
+      font-size: 22px;
+      letter-spacing:.04em;
+      font-weight:600;
+    }
+    .canvaItalic{
+      font-style: italic;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      font-size: 18px;
+      margin: 0 0 12px;
+    }
+    .card p{
+      margin: 8px 0;
+      line-height: 1.9;
+      color: rgba(45,60,52,.88);
+      font-size: 15px;
+    }
+
+    /* Footer (taller) */
+    footer{
+      margin-top: 26px;
+      background: rgba(26,44,35,.88);
+      color: rgba(255,255,255,.92);
+      border-radius: 18px;
+      padding: 18px 18px 26px;
+    }
+    .footerRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      letter-spacing:.02em;
+    }
+    .footerBrand{
+      margin-top: 18px;
+      text-align:center;
+      font-size: 14px;
+      opacity:.92;
+      letter-spacing:.06em;
+    }
+    .footerBrand strong{ font-weight:600; }
+    .adminGhost{
+      position: fixed;
+      left: 6px;
+      bottom: 6px;
+      width: 26px;
+      height: 26px;
+      opacity: 0;
+      pointer-events: auto;
+    }
+
+    /* ===== Modals ===== */
+    .modalBack{
+      position: fixed; inset:0;
+      background: rgba(15,20,18,.40);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index: 200;
+      padding: 18px;
+    }
+    .modalBack.show{ display:flex; }
+    .modal{
+      width: min(560px, 92vw);
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(60,86,72,.14);
+      border-radius: 18px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.22);
+      padding: 16px;
+    }
+    .modalHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .modalTitle{ font-weight:600; letter-spacing:.04em; }
+    .xBtn{
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      border: 1px solid rgba(60,86,72,.18);
+      background: rgba(255,255,255,.70);
+      cursor:pointer;
+    }
+    .input{
+      width:100%;
+      border-radius: 12px;
+      border: 1px solid rgba(60,86,72,.18);
+      padding: 10px 12px;
+      font: inherit;
+      outline: none;
+      background: rgba(255,255,255,.82);
+    }
+    .btn{
+      border: none;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor:pointer;
+      background: rgba(46,63,54,.92);
+      color: #fff;
+      font: inherit;
+    }
+    .muted{ color: rgba(56,72,62,.72); font-size: 13px; }
+
+    /* responsive */
+    @media (max-width: 820px){
+      .headInner{ flex-wrap: wrap; }
+      .brandTitle{ font-size: 38px; }
+      .icons{ padding-top: 8px; }
+    }
+  </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand">
-    <h1>十年一日</h1>
-    <div class="dashed"></div>
-    <div class="brand-sub">tenyears_oneday</div>
-  </div>
+<header>
+  <div class="headInner">
+    <div class="brand">
+      <h1 class="brandTitle">十年一日</h1>
+      <div class="brandSub">tenyears_oneday</div>
+    </div>
 
-  <nav class="nav">
-    <a class="active">關於我們</a>
-    <a>全系列🌸</a>
-    <a>純銀飾品✨</a>
-    <a>優惠活動🎁</a>
-    <a>飾品小知識💡</a>
-    <a>相關問題❗</a>
-  </nav>
+    <div class="navArea">
+      <ul class="navPills" id="navPills">
+        <li><a class="pill" href="#home">關於我們</a></li>
+        <li><a class="pill" href="#all">全系列🌸</a></li>
+        <li><a class="pill" href="#silver">純銀飾品✨</a></li>
+        <li><a class="pill" href="#deal">優惠活動🎁</a></li>
+        <li><a class="pill" href="#tips">飾品小知識💡</a></li>
+        <li><a class="pill" href="#faq">相關問題❗️</a></li>
+      </ul>
+    </div>
 
-  <div class="icons">
-    <a href="https://www.instagram.com/tenyears_oneday" target="_blank">IG</a>
-    <a href="https://line.me/R/ti/p/@396kwrga" target="_blank">LINE</a>
-    <span>🔍</span>
-    <span>🛒</span>
-    <span>👤</span>
+    <div class="icons">
+      <a class="iconBtn" href="https://www.instagram.com/tenyears_oneday?igsh=MW9hcjBnaTdjNzc0MQ%3D%3D&utm_source=qr" target="_blank" aria-label="Instagram">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a class="iconBtn" href="https://line.me/R/ti/p/@396kwrga" target="_blank" aria-label="LINE">
+        <i class="fa-brands fa-line"></i>
+      </a>
+      <button class="iconBtn" id="btnSearch" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="iconBtn" id="btnCart" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i></button>
+      <button class="iconBtn" id="btnUser" aria-label="User"><i class="fa-regular fa-user"></i></button>
+    </div>
   </div>
 </header>
 
-<section class="hero">
-  <h2>十年一日</h2>
-  <p class="hero-sub">時光淬鍊 · 破碎中尋覓永恆</p>
-  <p>每一件飾品，都是時間的詩篇</p>
-</section>
+<div class="wrap">
+  <main>
+    <!-- HOME -->
+    <section class="section" id="home">
+      <div class="overview">
+        <h2>十年一日</h2>
+        <div class="lines">
+          時光淬鍊 · 破碎中尋覓永恆<br/>
+          每一件飾品，都是時間的詩篇
+        </div>
 
-<section class="intro-full">
-  <div class="intro-card">
-    <h3>🤍 歡迎來到 十年一日</h3>
-    <div class="en">TEN YEARS ONE DAY</div>
-    <div class="italic">Every piece tells a story.</div>
+        <!-- Announcement (editable text) -->
+        <div class="notice">
+          <div class="tag">公告</div>
+          <textarea id="noticeText" placeholder="你可以在這裡放活動訊息（之後也能隨時改）"></textarea>
+        </div>
 
-    <p>承載著十年以上的友情，<br>繼續延續下去的動力。</p>
-    <p>每一件飾品，<br>都是時間累積的溫柔。</p>
+        <div class="card">
+          <h3>🤍 歡迎來到 十年一日</h3>
+          <div style="font-weight:600; letter-spacing:.08em;">TEN YEARS ONE DAY</div>
+          <div class="canvaItalic">Every piece tells a story.</div>
 
-    <p class="thanks">謝謝你，把重要的一天交給十年一日 ✨</p>
+          <p>
+            承載著十年以上的友情，<br/>
+            繼續延續下去的動力。
+          </p>
+          <p>
+            每一件飾品，<br/>
+            都是時間累積的溫柔。
+          </p>
+          <p style="margin-top:14px; font-weight:600;">
+            謝謝你，把重要的一天交給十年一日 ✨
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Placeholder sections (kept simple for now) -->
+    <section class="section" id="all">
+      <div class="overview">
+        <h2>全系列🌸</h2>
+        <p class="muted">這裡之後會放商品卡片（可新增）。目前先保留版面。</p>
+      </div>
+    </section>
+
+    <section class="section" id="silver">
+      <div class="overview">
+        <h2>純銀飾品✨</h2>
+        <p class="muted">這裡之後會放純銀分類商品（可新增）。目前先保留版面。</p>
+      </div>
+    </section>
+
+    <section class="section" id="deal">
+      <div class="overview">
+        <h2>優惠活動🎁</h2>
+        <p class="muted">這裡之後會放活動內容（可新增）。目前先保留版面。</p>
+      </div>
+    </section>
+
+    <section class="section" id="tips">
+      <div class="overview">
+        <h2>飾品小知識💡</h2>
+        <p class="muted">這裡之後會放保養/材質小知識（可新增）。目前先保留版面。</p>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="overview">
+        <h2>相關問題❗️</h2>
+        <p class="muted">這裡之後會放常見問題（可新增）。目前先保留版面。</p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footerRow">
+        <div>💎 精選材質 不含鉛，安心佩戴</div>
+        <div>✨ 獨特設計 韓日歐美風格齊聚</div>
+        <div>🚚 便利配送 超商取貨、宅配到府</div>
+      </div>
+      <div class="footerBrand"><strong>tenyears_oneday · 十年一日</strong></div>
+    </footer>
+
+    <!-- Invisible admin link (left-bottom) -->
+    <a class="adminGhost" href="#admin" aria-label="admin"></a>
+  </main>
+</div>
+
+<!-- Search Modal -->
+<div class="modalBack" id="searchModal">
+  <div class="modal">
+    <div class="modalHead">
+      <div class="modalTitle">搜尋</div>
+      <button class="xBtn" data-close="searchModal">✕</button>
+    </div>
+    <input class="input" id="searchInput" placeholder="輸入關鍵字（目前是示範）" />
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <button class="btn" id="searchGo">搜尋</button>
+      <div class="muted" style="align-self:center;">之後接商品資料庫再做真正搜尋</div>
+    </div>
   </div>
-</section>
+</div>
 
-<footer class="footer">
-  <div class="footer-items">
-    <div>💎 精選材質 不含鉛，安心佩戴</div>
-    <div>✨ 獨特設計 韓日歐美風格齊聚</div>
-    <div>🚚 便利配送 超商取貨、宅配到府</div>
+<!-- Cart Modal -->
+<div class="modalBack" id="cartModal">
+  <div class="modal">
+    <div class="modalHead">
+      <div class="modalTitle">購物車</div>
+      <button class="xBtn" data-close="cartModal">✕</button>
+    </div>
+    <div class="muted">目前是版型示範（之後接商品與結帳）。</div>
+    <div style="margin-top:10px; padding:12px; border:1px dashed rgba(60,86,72,.25); border-radius:14px; background:rgba(255,255,255,.65);">
+      你的購物車目前是空的。
+    </div>
+    <div style="display:flex; gap:10px; margin-top:12px; justify-content:flex-end;">
+      <button class="btn" data-close="cartModal" style="background:rgba(46,63,54,.80);">繼續購物</button>
+      <button class="btn" style="opacity:.6; cursor:not-allowed;">前往結帳</button>
+    </div>
+    <div style="margin-top:12px;">
+      <div class="muted" style="margin-bottom:6px;">登入會員（示範）</div>
+      <input class="input" placeholder="手機號碼" style="margin-bottom:8px;">
+      <input class="input" placeholder="密碼" type="password" style="margin-bottom:10px;">
+      <button class="btn" style="width:100%;">登入</button>
+    </div>
   </div>
-  <div class="footer-brand">tenyears_oneday · 十年一日</div>
-</footer>
+</div>
+
+<!-- User Modal -->
+<div class="modalBack" id="userModal">
+  <div class="modal">
+    <div class="modalHead">
+      <div class="modalTitle">會員</div>
+      <button class="xBtn" data-close="userModal">✕</button>
+    </div>
+    <div class="muted">目前是版型示範（之後可接會員資料）。</div>
+    <div style="margin-top:12px; display:grid; gap:8px;">
+      <input class="input" placeholder="手機號碼">
+      <input class="input" placeholder="密碼" type="password">
+      <button class="btn">登入</button>
+      <button class="btn" style="background: rgba(46,63,54,.78);">註冊</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== Tab routing by hash (single page, no jump) =====
+  const sections = Array.from(document.querySelectorAll('.section'));
+  const pills = Array.from(document.querySelectorAll('.pill'));
+
+  function showSection(hash){
+    const id = (hash || '#home').replace('#','') || 'home';
+    sections.forEach(s => s.classList.toggle('active', s.id === id));
+    pills.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+  }
+  window.addEventListener('hashchange', () => showSection(location.hash));
+  showSection(location.hash);
+
+  // ===== Modals =====
+  function openModal(id){ document.getElementById(id).classList.add('show'); }
+  function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+
+  document.getElementById('btnSearch').addEventListener('click', () => openModal('searchModal'));
+  document.getElementById('btnCart').addEventListener('click', () => openModal('cartModal'));
+  document.getElementById('btnUser').addEventListener('click', () => openModal('userModal'));
+
+  document.querySelectorAll('[data-close]').forEach(btn=>{
+    btn.addEventListener('click', (e)=> closeModal(e.target.getAttribute('data-close')));
+  });
+  document.querySelectorAll('.modalBack').forEach(back=>{
+    back.addEventListener('click', (e)=>{ if(e.target === back) back.classList.remove('show'); });
+  });
+
+  // ===== Notice saved locally =====
+  const notice = document.getElementById('noticeText');
+  const key = 'tenyears_notice';
+  notice.value = localStorage.getItem(key) || '';
+  notice.addEventListener('input', ()=> localStorage.setItem(key, notice.value));
+
+  // Demo search
+  document.getElementById('searchGo').addEventListener('click', ()=>{
+    alert('示範：你搜尋了「' + (document.getElementById('searchInput').value || '') + '」');
+  });
+</script>
 
 </body>
 </html>
