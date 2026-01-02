@@ -11,6 +11,72 @@ const IG_URL = "https://www.instagram.com/tenyears_oneday?igsh=MW9hcjBnaTdjNzc0M
 const LINE_URL = "https://line.me/R/ti/p/@396kwrga";
 const MAP_711 = "https://emap.pcsc.com.tw/emap.aspx";
 const MAP_FAMILY = "https://www.family.com.tw/Marketing/zh/Map";
+const API_URL = "https://script.google.com/macros/s/AKfycbzTQDS9uZ67YPC3yu9B71Ba3WLwe6_4cL3tTe2ZhBcqi_SIjSbEqEbpB6pd2JpVg-hM/exec";
+// 如果你的 Google Apps Script 需要 action 參數，模板會自動嘗試 ?action=get / ?action=set
+
+
+
+/* ===== Optional Google Apps Script Sync (API_URL) =====
+   需求：你的 GAS Web App 需回傳/接受 JSON
+   - GET  :  { ...storeData }   或  { ok:true, data:{...} }
+   - POST :  接收 { data: storeData } 或直接 storeData
+   模板會依序嘗試：
+     GET  API_URL?action=get  → API_URL
+     POST API_URL?action=set  → API_URL
+   失敗就退回 localStorage，不會讓網站壞掉。
+*/
+async function apiTryFetch(url){
+  const r = await fetch(url, { method:"GET", cache:"no-store" });
+  if(!r.ok) throw new Error("GET "+r.status);
+  return await r.json();
+}
+async function apiGetStore(){
+  if(!API_URL) return null;
+  try{
+    const j = await apiTryFetch(API_URL + (API_URL.includes("?")?"&":"?") + "action=get");
+    return j?.data ?? j;
+  }catch(e1){
+    try{
+      const j = await apiTryFetch(API_URL);
+      return j?.data ?? j;
+    }catch(e2){
+      console.warn("[API] get failed, fallback to localStorage", e2);
+      return null;
+    }
+  }
+}
+async function apiPostStore(data){
+  if(!API_URL) return;
+  const payload = { data };
+  const postOnce = async (url)=> {
+    const r = await fetch(url, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload),
+    });
+    if(!r.ok) throw new Error("POST "+r.status);
+    // 有些 GAS 不回 json，這裡保守處理
+    const t = await r.text();
+    try{ return JSON.parse(t); }catch{ return { ok:true, text:t }; }
+  };
+  try{
+    return await postOnce(API_URL + (API_URL.includes("?")?"&":"?") + "action=set");
+  }catch(e1){
+    try{
+      return await postOnce(API_URL);
+    }catch(e2){
+      console.warn("[API] set failed (ignored)", e2);
+    }
+  }
+}
+// debounce push
+let _apiSaveTimer = null;
+function apiScheduleSave(store){
+  if(!API_URL) return;
+  clearTimeout(_apiSaveTimer);
+  _apiSaveTimer = setTimeout(()=>{ apiPostStore(store); }, 600);
+}
+/* ===== End Optional Sync ===== */
 
 const routes = {
   "#home": { title: "關於我們（首頁）" },
@@ -44,10 +110,17 @@ function loadStore(){
 }
 function saveStore(store){
   localStorage.setItem(STORE_KEY, JSON.stringify(store));
+  apiScheduleSave(store);
 }
 
 async function bootstrap(){
   let store = loadStore();
+  // 先嘗試從 Google Apps Script 讀取（如果設定了 API_URL）
+  const remote = await apiGetStore();
+  if(remote && typeof remote === "object"){
+    store = remote;
+    saveStore(store);
+  }
   if(!store){
     const [p, s] = await Promise.all([
       fetch("data/products.json").then(r=>r.json()),
@@ -165,7 +238,10 @@ function renderHome(store){
         <div class="big">十年一日</div>
         <div class="sub">時光淬鍊 · 破碎中尋覓永恆<br/>每一件飾品 都是時間的詩篇</div>
       </div>
-<div class="text" id="announceTopText">${escapeHTML(s.announcementTop || "")}</div>
+
+      <div class="announce" style="margin-top:14px;">
+        <div class="badge">公告</div>
+        <div class="text" id="announceTopText">${escapeHTML(s.announcementTop || "")}</div>
       </div>
 
       <div class="grid2">
